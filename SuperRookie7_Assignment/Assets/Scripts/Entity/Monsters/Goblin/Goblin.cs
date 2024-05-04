@@ -1,16 +1,15 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using Entity.Base;
 using FSM.Base;
 using FSM.Base.State;
 using Singleton.Manager;
 
-public partial class Knight : BaseCharacter
+public partial class Goblin : BaseMonster
 {
     private void Awake()
     {
-        animCntrllr = GetComponent<Animator>();
+        animCntrllr = GetComponentInChildren<Animator>();
         AssignAnimationParameters();
 
         StateDict = new Dictionary<EState, IStatable>();
@@ -25,20 +24,25 @@ public partial class Knight : BaseCharacter
 
     private void OnEnable()
     {
-        EntityManager.Instance.spawnedCharactersDict.Add(GetHashCode(), this);
+        EntityManager.Instance.spawnedMonstersDict.Add(GetHashCode(), this);
     }
 
     private void OnDisable()
     {
-        EntityManager.Instance.spawnedCharactersDict.Remove(GetHashCode());
+        EntityManager.Instance.spawnedMonstersDict.Remove(GetHashCode());
+    }
+
+    private void Start()
+    {
+        StartCoroutine(UpdateFSM());
     }
 
     protected override void InitializeStateDict()
     {
-        StateDict[EState.Idle] = new Knight_IdleState(this);
-        StateDict[EState.Move] = new Knight_MoveState(this);
-        StateDict[EState.Attack] = new Knight_AttackState(this);
-        StateDict[EState.Skill] = new Knight_SkillState(this);
+        StateDict[EState.Idle] = new Goblin_IdleState(this);
+        StateDict[EState.Move] = new Goblin_MoveState(this);
+        StateDict[EState.Attack] = new Goblin_AttackState(this);
+        StateDict[EState.Die] = new Goblin_DieState(this);
     }
 
     protected override void AssignAnimationParameters()
@@ -48,6 +52,6 @@ public partial class Knight : BaseCharacter
 
     protected override void InitializeStatusData()
     {
-        (statusData as Knight_Status).CurrentHP = statusData.so_StatusData.maxHP;
+        (statusData as Goblin_Status).CurrentHP = statusData.so_StatusData.maxHP;
     }
 }

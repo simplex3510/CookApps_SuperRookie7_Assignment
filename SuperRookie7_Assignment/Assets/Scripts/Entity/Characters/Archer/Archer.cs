@@ -1,15 +1,15 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Entity.Base;
 using FSM.Base;
 using FSM.Base.State;
-using UnityEngine;
 
-public partial class Archer : BaseEntity
+public partial class Archer : BaseCharacter
 {
     private void Awake()
     {
-        AnimCntrllr = GetComponent<Animator>();
+        animCntrllr = GetComponent<Animator>();
         AssignAnimationParameters();
 
         StateDict = new Dictionary<EState, IStatable>();
@@ -21,7 +21,6 @@ public partial class Archer : BaseEntity
 
         InitializeStatusData();
     }
-
 
     protected override void InitializeStateDict()
     {

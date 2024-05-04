@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FSM.Base.State;
 
-public class Knight_AttackState : MonoBehaviour
+public class Knight_AttackState : BaseState
 {
-    // Start is called before the first frame update
-    void Start()
+    public Knight_AttackState(Knight entity) : base(entity) { }
+
+    public override void OnStateEnter()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnStateExit()
     {
-        
+
+    }
+
+    public override void OnStateUpdate()
+    {
+
     }
 }

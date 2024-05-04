@@ -1,6 +1,6 @@
 using Entity.Base;
 
-public class Knight_Status : BaseStatus
+public class Goblin_Status : BaseStatus
 {
     [UnityEngine.SerializeField]
     private float currentHP;

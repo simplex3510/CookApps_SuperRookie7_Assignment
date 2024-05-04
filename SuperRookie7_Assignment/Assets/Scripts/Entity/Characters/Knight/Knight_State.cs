@@ -1,18 +1,28 @@
+using Entity.Base;
+using FSM.Base.State;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Knight_State : MonoBehaviour
+public partial class Knight : BaseCharacter
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void AttackTarget()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void DamagedEntity(float damage)
     {
-        
+
+    }
+
+    public override void ChangeStateFSM(EState nextState)
+    {
+        base.ChangeStateFSM(nextState);
+    }
+
+    public override IEnumerator UpdateFSM()
+    {
+        yield return null;
     }
 }

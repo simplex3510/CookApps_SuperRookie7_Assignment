@@ -12,8 +12,7 @@ namespace Singleton
             {
                 if (instance == null)
                 {
-                    GameObject singleton;
-                    singleton = GameObject.Find(typeof(T).Name);
+                    GameObject singleton = GameObject.Find(typeof(T).ToString());
                     if (singleton == null)
                     {
                         singleton = new GameObject(typeof(T).Name);
@@ -26,6 +25,19 @@ namespace Singleton
                 }
 
                 return instance;
+            }
+        }
+
+        protected virtual void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this as T;
+                DontDestroyOnLoad(gameObject);
+            }
+            else if (instance != this)
+            {
+                Destroy(gameObject);
             }
         }
     }

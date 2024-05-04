@@ -9,6 +9,7 @@ namespace FSM.Base.State
         Move,
         Attack,
         Skill,
+        Die,
         Size
     }
 

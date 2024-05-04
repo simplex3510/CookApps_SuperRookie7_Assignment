@@ -1,7 +1,6 @@
 using Entity.Base;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Singleton.Manager
@@ -9,9 +8,27 @@ namespace Singleton.Manager
     public class EntityManager : MonoSingleton<EntityManager>
     {
         [SerializeField]
-        private List<BaseEntity> characters = new List<BaseEntity>();
-        
+        public Dictionary<int, BaseCharacter> spawnedCharactersDict = new Dictionary<int, BaseCharacter>();
+
         [SerializeField]
-        private List<BaseEntity> monsters = new List<BaseEntity>();
+        public Dictionary<int, BaseMonster> spawnedMonstersDict = new Dictionary<int, BaseMonster>();
+        [SerializeField]
+        private int monstersCapacity;
+
+        [SerializeField]
+        private GameObject Prefab_Goblin;
+
+        protected override void Awake()
+        {
+            base.Awake();
+        }
+
+        private void Update()
+        {
+            if (spawnedMonstersDict.Count < monstersCapacity)
+            {
+                Instantiate(Prefab_Goblin);
+            }
+        }
     }
 }
