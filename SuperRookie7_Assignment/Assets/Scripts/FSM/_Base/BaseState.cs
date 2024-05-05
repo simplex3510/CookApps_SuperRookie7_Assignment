@@ -1,15 +1,19 @@
 using Entity.Base;
+using UnityEngine;
 
 namespace FSM.Base.State
 {
     public enum EState : int
     {
         None = 0,
+
         Idle,
         Move,
+        Battle,
         Attack,
         Skill,
         Die,
+
         Size
     }
 

@@ -8,6 +8,7 @@ using Singleton.Manager;
 
 public partial class Knight : BaseCharacter
 {
+    #region Unity Life-Cycle
     private void Awake()
     {
         animCntrllr = GetComponent<Animator>();
@@ -16,9 +17,8 @@ public partial class Knight : BaseCharacter
         StateDict = new Dictionary<EState, IStatable>();
         InitializeStateDict();
 
-
         curState = EState.Idle;
-        FSM = new FiniteStateMachine(StateDict[curState]);
+        KnightFSM = new FiniteStateMachine(StateDict[curState]);
 
         InitializeStatusData();
     }
@@ -32,6 +32,13 @@ public partial class Knight : BaseCharacter
     {
         EntityManager.Instance.spawnedCharactersDict.Remove(GetHashCode());
     }
+    #endregion
+
+    protected void InitializeEntity()
+    {
+        InitializeStatusData();
+        ChangeStateFSM(EState.Idle);
+    }
 
     protected override void InitializeStateDict()
     {
@@ -39,6 +46,7 @@ public partial class Knight : BaseCharacter
         StateDict[EState.Move] = new Knight_MoveState(this);
         StateDict[EState.Attack] = new Knight_AttackState(this);
         StateDict[EState.Skill] = new Knight_SkillState(this);
+        StateDict[EState.Die] = new Knight_DieState(this);
     }
 
     protected override void AssignAnimationParameters()
@@ -48,6 +56,6 @@ public partial class Knight : BaseCharacter
 
     protected override void InitializeStatusData()
     {
-        (statusData as Knight_Status).CurrentHP = statusData.so_StatusData.maxHP;
+        (statusData as Knight_Status).CurrentHP = statusData.so_StatusData.MaxHP;
     }
 }

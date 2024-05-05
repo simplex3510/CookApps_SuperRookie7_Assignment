@@ -20,6 +20,7 @@ namespace Singleton.Manager
 
         private void Awake()
         {
+            //Time.timeScale = 0.1f;
             //DonDestroySingleton();
         }
 
@@ -31,22 +32,22 @@ namespace Singleton.Manager
             }
         }
 
-        //private void OnDestroy()
-        //{
-        //    // 씬이 변경될 때 생성된 게임 오브젝트 정리
-        //    var characters = new List<BaseCharacter>(spawnedCharactersDict.Values);
-        //    foreach (var character in characters)
-        //    {
-        //        Destroy(character.gameObject);
-        //    }
-        //    spawnedCharactersDict.Clear();
+        private void OnDestroy()
+        {
+            // 씬이 변경될 때 생성된 게임 오브젝트 정리
+            var characters = new List<BaseCharacter>(spawnedCharactersDict.Values);
+            foreach (var character in characters)
+            {
+                Destroy(character.gameObject);
+            }
+            spawnedCharactersDict.Clear();
 
-        //    var monsters = new List<BaseMonster>(spawnedMonstersDict.Values);
-        //    foreach (var monster in monsters)
-        //    {
-        //        Destroy(monster.gameObject);
-        //    }
-        //    spawnedMonstersDict.Clear();
-        //}
+            var monsters = new List<BaseMonster>(spawnedMonstersDict.Values);
+            foreach (var monster in monsters)
+            {
+                Destroy(monster.gameObject);
+            }
+            spawnedMonstersDict.Clear();
+        }
     }
 }

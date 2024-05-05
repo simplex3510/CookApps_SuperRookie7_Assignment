@@ -11,7 +11,7 @@ public partial class Archer : BaseCharacter
 
     }
 
-    public override void DamagedEntity(float damage)
+    public override void AttackedEntity(float damage)
     {
 
     }

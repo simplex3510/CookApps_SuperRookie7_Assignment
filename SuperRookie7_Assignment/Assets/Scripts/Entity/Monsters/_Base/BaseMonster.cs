@@ -1,8 +1,8 @@
 using FSM.Base.State;
 using FSM.Base;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Entity.Base
 {
@@ -10,19 +10,22 @@ namespace Entity.Base
     {
         [SerializeField]
         protected Animator animCntrllr;
-        public Animator AnimCntrllr { get { return animCntrllr; } }
+        public Animator AnimCntrllr { get => animCntrllr; }
         [SerializeField]
         protected float disappearDuration;
-        public float DisappearDuration { get { return disappearDuration; } }
+        public float DisappearDuration { get => disappearDuration; }
+
+        public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
         public int AnimParam_Move { get; private set; }
+        public int AnimParam_Battle { get; private set; }
         public int AnimParam_Attack { get; private set; }
         public int AnimParam_Die { get; private set; }
 
         [SerializeField]
         protected EState curState;
         protected Dictionary<EState, IStatable> StateDict { get; set; }
-        protected FiniteStateMachine FSM { get; set; }
+        protected FiniteStateMachine GoblinFSM { get; set; }
 
         [SerializeField]
         protected BaseEntity target;
@@ -30,14 +33,18 @@ namespace Entity.Base
         protected LayerMask targetLayerMask;
 
         [SerializeField]
-        protected BaseStatus statusData;
+        private BaseStatus statusData;
+        public BaseStatus StatusData { get => statusData; }
 
         // BaseEntity
         protected override void AssignAnimationParameters()
         {
+            AnimParam_AtkTime = Animator.StringToHash("atk_time");
+
             AnimParam_Idle = Animator.StringToHash("idle");
             AnimParam_Move = Animator.StringToHash("move");
-            AnimParam_Attack = Animator.StringToHash("canAttack");
+            AnimParam_Battle = Animator.StringToHash("isBattle");
+            AnimParam_Attack = Animator.StringToHash("attack");
             AnimParam_Die = Animator.StringToHash("die");
         }
 
@@ -49,16 +56,16 @@ namespace Entity.Base
             switch (curState)
             {
                 case EState.Idle:
-                    FSM.ChangeState(StateDict[EState.Idle]);
+                    GoblinFSM.ChangeState(StateDict[EState.Idle]);
                     break;
                 case EState.Move:
-                    FSM.ChangeState(StateDict[EState.Move]);
+                    GoblinFSM.ChangeState(StateDict[EState.Move]);
                     break;
-                case EState.Attack:
-                    FSM.ChangeState(StateDict[EState.Attack]);
+                case EState.Battle:
+                    GoblinFSM.ChangeState(StateDict[EState.Battle]);
                     break;
                 case EState.Die:
-                    FSM.ChangeState(StateDict[EState.Die]);
+                    GoblinFSM.ChangeState(StateDict[EState.Die]);
                     break;
                 default:
                     Debug.LogError("ChangeStateFSM Error");

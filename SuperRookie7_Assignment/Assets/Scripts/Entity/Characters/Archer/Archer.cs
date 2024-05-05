@@ -17,7 +17,7 @@ public partial class Archer : BaseCharacter
 
 
         curState = EState.Idle;
-        FSM = new FiniteStateMachine(StateDict[curState]);
+        KnightFSM = new FiniteStateMachine(StateDict[curState]);
 
         InitializeStatusData();
     }
@@ -37,6 +37,6 @@ public partial class Archer : BaseCharacter
 
     protected override void InitializeStatusData()
     {
-        (statusData as Archer_Status).CurrentHP = statusData.so_StatusData.maxHP;
+        (statusData as Archer_Status).CurrentHP = statusData.so_StatusData.MaxHP;
     }
 }

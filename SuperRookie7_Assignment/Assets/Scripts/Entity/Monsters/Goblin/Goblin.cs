@@ -7,17 +7,23 @@ using Singleton.Manager;
 
 public partial class Goblin : BaseMonster
 {
+    [SerializeField]
+    private Transform rootTransfrom;
+    public Transform Root { get { return rootTransfrom; } }
+
+    #region Unity Life-Cycle
     private void Awake()
     {
+        rootTransfrom = transform.parent;
+
         animCntrllr = GetComponentInChildren<Animator>();
         AssignAnimationParameters();
 
         StateDict = new Dictionary<EState, IStatable>();
         InitializeStateDict();
 
-
         curState = EState.Idle;
-        FSM = new FiniteStateMachine(StateDict[curState]);
+        GoblinFSM = new FiniteStateMachine(StateDict[curState]);
 
         InitializeStatusData();
     }
@@ -25,23 +31,27 @@ public partial class Goblin : BaseMonster
     private void OnEnable()
     {
         EntityManager.Instance.spawnedMonstersDict.Add(GetHashCode(), this);
-    }
-
-    private void Start()
-    {
         StartCoroutine(UpdateFSM());
     }
 
     private void OnDisable()
     {
+        StopCoroutine(UpdateFSM());
         EntityManager.Instance.spawnedMonstersDict.Remove(GetHashCode());
+    }
+    #endregion
+
+    protected void InitializeEntity()
+    {
+        InitializeStatusData();
+        ChangeStateFSM(EState.Idle);
     }
 
     protected override void InitializeStateDict()
     {
         StateDict[EState.Idle] = new Goblin_IdleState(this);
         StateDict[EState.Move] = new Goblin_MoveState(this);
-        StateDict[EState.Attack] = new Goblin_AttackState(this);
+        StateDict[EState.Battle] = new Goblin_BattleState(this);
         StateDict[EState.Die] = new Goblin_DieState(this);
     }
 
@@ -52,6 +62,6 @@ public partial class Goblin : BaseMonster
 
     protected override void InitializeStatusData()
     {
-        (statusData as Goblin_Status).CurrentHP = statusData.so_StatusData.maxHP;
+        (StatusData as Goblin_Status).CurrentHP = StatusData.so_StatusData.MaxHP;
     }
 }

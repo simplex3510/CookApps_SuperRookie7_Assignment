@@ -6,7 +6,7 @@ using FSM.Base.State;
 
 namespace Entity.Base
 {
-    public abstract class BaseEntity : MonoBehaviour, IDamagable, IFiniteStateMachinable
+    public abstract class BaseEntity : MonoBehaviour, IAttackable, IFiniteStateMachinable
     {
         // BaseEntity
         protected abstract void AssignAnimationParameters();
@@ -14,7 +14,7 @@ namespace Entity.Base
         protected abstract void InitializeStatusData();
 
         // IFiniteStateMachinable
-        public abstract void DamagedEntity(float Damage);
+        public abstract void AttackedEntity(float Damage);
         public abstract IEnumerator UpdateFSM();
 
         // IDamagable

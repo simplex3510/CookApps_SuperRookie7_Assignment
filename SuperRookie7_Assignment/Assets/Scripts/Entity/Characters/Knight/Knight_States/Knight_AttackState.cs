@@ -9,12 +9,12 @@ public class Knight_AttackState : BaseState
 
     public override void OnStateEnter()
     {
-
+        (entity as Knight).AnimCntrllr.SetBool((entity as Knight).AnimParam_Attack, true);
     }
 
     public override void OnStateExit()
     {
-
+        (entity as Knight).AnimCntrllr.SetBool((entity as Knight).AnimParam_Attack, false);
     }
 
     public override void OnStateUpdate()

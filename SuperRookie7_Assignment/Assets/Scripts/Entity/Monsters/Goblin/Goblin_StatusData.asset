@@ -15,5 +15,6 @@ MonoBehaviour:
   maxHP: 100
   str: 10
   spd: 2.5
+  respawnTime: 5
   atk_rng: 1
   atk_time: 1

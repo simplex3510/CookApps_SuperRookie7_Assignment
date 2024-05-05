@@ -7,12 +7,12 @@ public class Goblin_IdleState : BaseState
 
     public override void OnStateEnter()
     {
-        (entity as Goblin).AnimCntrllr.SetTrigger((entity as Goblin).AnimParam_Idle);
+        GetEntity<Goblin>().AnimCntrllr.SetTrigger(GetEntity<Goblin>().AnimParam_Idle);
     }
 
     public override void OnStateExit()
     {
-        (entity as Goblin).CheckNearestEnemy();
+        GetEntity<Goblin>().CheckNearestCharacter();
     }
 
     public override void OnStateUpdate()

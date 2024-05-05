@@ -9,7 +9,7 @@ public class Knight_IdleState : BaseState
 
     public override void OnStateEnter()
     {
-
+        (entity as Knight).AnimCntrllr.SetTrigger((entity as Knight).AnimParam_Idle);
     }
 
     public override void OnStateExit()
