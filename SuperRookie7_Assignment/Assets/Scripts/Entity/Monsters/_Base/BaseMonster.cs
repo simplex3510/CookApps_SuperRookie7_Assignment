@@ -15,6 +15,10 @@ namespace Entity.Base
         protected float disappearDuration;
         public float DisappearDuration { get => disappearDuration; }
 
+        [SerializeField]
+        protected Rigidbody2D rigidbody_2D;
+        public Rigidbody2D Rigidbody_2D {  get => rigidbody_2D; }
+
         public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
         public int AnimParam_Move { get; private set; }

@@ -10,17 +10,19 @@ namespace Entity.Base
     {
         [SerializeField]
         protected Animator animCntrllr;
-        public Animator AnimCntrllr { get { return animCntrllr; } }
+        public Animator AnimCntrllr { get => animCntrllr; }
         [SerializeField]
         protected float disappearDuration;
-        public float DisappearDuration { get { return disappearDuration; } }
+        public float DisappearDuration { get => disappearDuration; }
 
+        public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
         public int AnimParam_Move { get; private set; }
+        public int AnimParam_Battle { get; private set; }
         public int AnimParam_Attack { get; private set; }
-        public int AnimParam_Skill { get; private set; }
         public int AnimParam_Die { get; private set; }
 
+        [SerializeField]
         protected EState curState;
         protected Dictionary<EState, IStatable> StateDict { get; set; }
         protected FiniteStateMachine KnightFSM { get; set; }
@@ -31,15 +33,18 @@ namespace Entity.Base
         protected LayerMask targetLayerMask;
 
         [SerializeField]
-        protected BaseStatus statusData;
+        private BaseStatus statusData;
+        public BaseStatus StatusData { get => statusData; }
 
         // BaseEntity
         protected override void AssignAnimationParameters()
         {
+            AnimParam_AtkTime = Animator.StringToHash("atk_time");
+
             AnimParam_Idle = Animator.StringToHash("idle");
             AnimParam_Move = Animator.StringToHash("move");
-            AnimParam_Attack = Animator.StringToHash("canAttack");
-            AnimParam_Skill = Animator.StringToHash("canSkill");
+            AnimParam_Battle = Animator.StringToHash("isBattle");
+            AnimParam_Attack = Animator.StringToHash("attack");
             AnimParam_Die = Animator.StringToHash("die");
         }
 
@@ -56,8 +61,8 @@ namespace Entity.Base
                 case EState.Move:
                     KnightFSM.ChangeState(StateDict[EState.Move]);
                     break;
-                case EState.Attack:
-                    KnightFSM.ChangeState(StateDict[EState.Attack]);
+                case EState.Battle:
+                    KnightFSM.ChangeState(StateDict[EState.Battle]);
                     break;
                 case EState.Skill:
                     KnightFSM.ChangeState(StateDict[EState.Skill]);

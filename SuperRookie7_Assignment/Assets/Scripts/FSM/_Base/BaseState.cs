@@ -10,7 +10,6 @@ namespace FSM.Base.State
         Idle,
         Move,
         Battle,
-        Attack,
         Skill,
         Die,
 

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4811755070529628109}
   - component: {fileID: 6221939046119888196}
   - component: {fileID: 1613550360096297614}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,8 +75,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1490788537
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 4723107735738678597, guid: c1cdd26cc09ad224884556bc4d8296ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -124,6 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animCntrllr: {fileID: 8022901349158942126}
   disappearDuration: 0.1
+  rigidbody_2D: {fileID: 6221939046119888196}
   curState: 1
   target: {fileID: 0}
   targetLayerMask:
@@ -132,8 +133,8 @@ MonoBehaviour:
   statusData: {fileID: 4811755070529628109}
   rootTransfrom: {fileID: 7571622112382895399}
   gizmoOffestX: 0
-  gizmoOffestY: -0.25
-  gizmoOffsetRadius: 0.5
+  gizmoOffestY: -0.5
+  gizmoOffsetRadius: 0.25
 --- !u!114 &4811755070529628109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,7 +175,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!70 &1613550360096297614
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -207,9 +208,9 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.25}
-  m_Size: {x: 1, y: 1}
-  m_Direction: 0
+  m_Offset: {x: 0, y: -0.5}
+  m_Size: {x: 0.5, y: 0.5}
+  m_Direction: 1
 --- !u!1 &9173002089458966285
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7571622112382895399}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Goblin_Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}

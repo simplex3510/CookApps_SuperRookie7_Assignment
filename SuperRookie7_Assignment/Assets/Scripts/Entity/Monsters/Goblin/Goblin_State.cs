@@ -1,9 +1,8 @@
-using Entity.Base;
-using FSM.Base.State;
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 using Singleton.Manager;
-using UnityEditorInternal;
+using FSM.Base.State;
+using Entity.Base;
 
 public partial class Goblin
 {
@@ -75,6 +74,16 @@ public partial class Goblin
         {
             Debug.LogError("Can not Move to Target which is null");
             return;
+        }
+
+        Vector2 direction = (target.transform.position - Root.transform.position).normalized;
+        if (direction.x < 0)
+        {
+            transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
         
         Root.transform.position = Vector2.MoveTowards(Root.transform.position, target.transform.position, StatusData.so_StatusData.SPD * Time.deltaTime);
@@ -186,6 +195,5 @@ public partial class Goblin
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius);
-
     }
 }

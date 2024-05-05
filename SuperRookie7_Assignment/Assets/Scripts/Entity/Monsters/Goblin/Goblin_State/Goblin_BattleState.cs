@@ -7,7 +7,6 @@ public class Goblin_BattleState : BaseState
 {
     private float timeInterval;
     private float lastAttackTime = 0;
-    private float timeSinceLastAttack;
 
     public Goblin_BattleState(Goblin entity) : base(entity) { }
 
@@ -20,16 +19,13 @@ public class Goblin_BattleState : BaseState
     {
         GetEntity<Goblin>().AnimCntrllr.SetBool(GetEntity<Goblin>().AnimParam_Battle, false);
         GetEntity<Goblin>().CheckNearestCharacter();
-
-        return;
     }
 
     public override void OnStateUpdate()
     {
         timeInterval = 1f / GetEntity<Goblin>().StatusData.so_StatusData.ATK_Time;
-        timeSinceLastAttack = Time.time - lastAttackTime;
 
-        if (timeInterval <= timeSinceLastAttack)
+        if (timeInterval <= Time.time - lastAttackTime)
         {
             GetEntity<Goblin>().AnimCntrllr.SetFloat(GetEntity<Goblin>().AnimParam_AtkTime,
                                                      GetEntity<Goblin>().StatusData.so_StatusData.ATK_Time);

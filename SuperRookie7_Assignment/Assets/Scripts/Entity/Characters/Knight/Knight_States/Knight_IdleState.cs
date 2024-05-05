@@ -9,12 +9,12 @@ public class Knight_IdleState : BaseState
 
     public override void OnStateEnter()
     {
-        (entity as Knight).AnimCntrllr.SetTrigger((entity as Knight).AnimParam_Idle);
+        GetEntity<Knight>().AnimCntrllr.SetTrigger(GetEntity<Knight>().AnimParam_Idle);
     }
 
     public override void OnStateExit()
     {
-
+        GetEntity<Knight>().CheckNearestMonster();
     }
 
     public override void OnStateUpdate()

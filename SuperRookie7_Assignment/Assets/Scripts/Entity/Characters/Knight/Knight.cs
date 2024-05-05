@@ -26,10 +26,12 @@ public partial class Knight : BaseCharacter
     private void OnEnable()
     {
         EntityManager.Instance.spawnedCharactersDict.Add(GetHashCode(), this);
+        StartCoroutine(UpdateFSM());
     }
 
     private void OnDisable()
     {
+        StopCoroutine(UpdateFSM());
         EntityManager.Instance.spawnedCharactersDict.Remove(GetHashCode());
     }
     #endregion
@@ -44,7 +46,7 @@ public partial class Knight : BaseCharacter
     {
         StateDict[EState.Idle] = new Knight_IdleState(this);
         StateDict[EState.Move] = new Knight_MoveState(this);
-        StateDict[EState.Attack] = new Knight_AttackState(this);
+        StateDict[EState.Battle] = new Knight_BattleState(this);
         StateDict[EState.Skill] = new Knight_SkillState(this);
         StateDict[EState.Die] = new Knight_DieState(this);
     }
@@ -56,6 +58,6 @@ public partial class Knight : BaseCharacter
 
     protected override void InitializeStatusData()
     {
-        (statusData as Knight_Status).CurrentHP = statusData.so_StatusData.MaxHP;
+        (StatusData as Knight_Status).CurrentHP = StatusData.so_StatusData.MaxHP;
     }
 }

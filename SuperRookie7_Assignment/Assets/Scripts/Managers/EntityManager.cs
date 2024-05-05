@@ -7,16 +7,19 @@ namespace Singleton.Manager
 {
     public class EntityManager : MonoSingleton<EntityManager>
     {
-        [SerializeField]
         public Dictionary<int, BaseCharacter> spawnedCharactersDict = new Dictionary<int, BaseCharacter>();
-
-        [SerializeField]
         public Dictionary<int, BaseMonster> spawnedMonstersDict = new Dictionary<int, BaseMonster>();
-        [SerializeField]
-        private int monstersCapacity;
 
         [SerializeField]
         private GameObject Prefab_Goblin;
+        [SerializeField]
+        private int monsterCapacity;
+        [SerializeField]
+        private float monsterSpawnCycleTime;
+        private float lastSpawnTime = 0;
+
+        private Vector2 spawnPoint1 = new Vector2(-8, 2);
+        private Vector2 spawnPonit2 = new Vector2(8.75f, -3.5f);
 
         private void Awake()
         {
@@ -26,9 +29,16 @@ namespace Singleton.Manager
 
         private void Update()
         {
-            if (spawnedMonstersDict.Count < monstersCapacity)
+            if (monsterSpawnCycleTime < Time.time - lastSpawnTime)
             {
-                Instantiate(Prefab_Goblin);
+                if (spawnedMonstersDict.Count < monsterCapacity)
+                {
+                    float xPos = Random.Range(spawnPoint1.x, spawnPonit2.x);
+                    float yPos = Random.Range(spawnPonit2.y, spawnPoint1.y);
+
+                    Instantiate(Prefab_Goblin, new Vector2(xPos, yPos), Quaternion.identity);
+                    lastSpawnTime = Time.time;
+                }
             }
         }
 

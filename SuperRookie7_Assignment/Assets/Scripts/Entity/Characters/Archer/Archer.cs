@@ -26,7 +26,7 @@ public partial class Archer : BaseCharacter
     {
         StateDict[EState.Idle] = new Archer_IdleState(this);
         StateDict[EState.Move] = new Archer_MoveState(this);
-        StateDict[EState.Attack] = new Archer_AttackState(this);
+        StateDict[EState.Battle] = new Archer_AttackState(this);
         StateDict[EState.Skill] = new Archer_SkillState(this);
     }
 
@@ -37,6 +37,6 @@ public partial class Archer : BaseCharacter
 
     protected override void InitializeStatusData()
     {
-        (statusData as Archer_Status).CurrentHP = statusData.so_StatusData.MaxHP;
+        (StatusData as Archer_Status).CurrentHP = StatusData.so_StatusData.MaxHP;
     }
 }

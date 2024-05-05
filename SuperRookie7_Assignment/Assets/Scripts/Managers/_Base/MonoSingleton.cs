@@ -12,7 +12,7 @@ namespace Singleton
             {
                 if (instance == null)
                 {
-                    GameObject singleton = GameObject.Find(typeof(T).ToString());
+                    GameObject singleton = GameObject.Find(typeof(T).Name);
                     if (singleton == null)
                     {
                         singleton = new GameObject(typeof(T).Name);
