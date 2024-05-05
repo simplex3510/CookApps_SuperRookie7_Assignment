@@ -27,14 +27,14 @@ public partial class Goblin : BaseMonster
         EntityManager.Instance.spawnedMonstersDict.Add(GetHashCode(), this);
     }
 
-    private void OnDisable()
-    {
-        EntityManager.Instance.spawnedMonstersDict.Remove(GetHashCode());
-    }
-
     private void Start()
     {
         StartCoroutine(UpdateFSM());
+    }
+
+    private void OnDisable()
+    {
+        EntityManager.Instance.spawnedMonstersDict.Remove(GetHashCode());
     }
 
     protected override void InitializeStateDict()

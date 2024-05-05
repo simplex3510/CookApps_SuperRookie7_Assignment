@@ -28,7 +28,7 @@ namespace Singleton
             }
         }
 
-        protected virtual void Awake()
+        protected void DonDestroySingleton()
         {
             if (instance == null)
             {

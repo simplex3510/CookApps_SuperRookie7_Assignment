@@ -25,14 +25,14 @@ public partial class Goblin
         float leastDistance = float.MaxValue;
         Vector2 charPos = new Vector2(transform.position.x, transform.position.y);
 
-        foreach (var enemy in EntityManager.Instance.spawnedCharactersDict)
+        foreach (var enemy in EntityManager.Instance.spawnedCharactersDict.Values)
         {
-            Vector2 enemyPos = new Vector2(enemy.Value.transform.position.x, enemy.Value.transform.position.y);
+            Vector2 enemyPos = new Vector2(enemy.transform.position.x, enemy.transform.position.y);
             float distance = Vector2.Distance(charPos, enemyPos);
             if (distance < leastDistance)
             {
                 leastDistance = distance;
-                target = enemy.Value;
+                target = enemy;
             }
         }
 

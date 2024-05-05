@@ -18,9 +18,9 @@ namespace Singleton.Manager
         [SerializeField]
         private GameObject Prefab_Goblin;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
+            //DonDestroySingleton();
         }
 
         private void Update()
@@ -30,5 +30,23 @@ namespace Singleton.Manager
                 Instantiate(Prefab_Goblin);
             }
         }
+
+        //private void OnDestroy()
+        //{
+        //    // 씬이 변경될 때 생성된 게임 오브젝트 정리
+        //    var characters = new List<BaseCharacter>(spawnedCharactersDict.Values);
+        //    foreach (var character in characters)
+        //    {
+        //        Destroy(character.gameObject);
+        //    }
+        //    spawnedCharactersDict.Clear();
+
+        //    var monsters = new List<BaseMonster>(spawnedMonstersDict.Values);
+        //    foreach (var monster in monsters)
+        //    {
+        //        Destroy(monster.gameObject);
+        //    }
+        //    spawnedMonstersDict.Clear();
+        //}
     }
 }
