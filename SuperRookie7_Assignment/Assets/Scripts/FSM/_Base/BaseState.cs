@@ -12,6 +12,7 @@ namespace FSM.Base.State
         Battle,
         Skill,
         Die,
+        Victory,
 
         Size
     }

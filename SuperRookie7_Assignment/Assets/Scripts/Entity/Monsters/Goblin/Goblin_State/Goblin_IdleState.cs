@@ -1,4 +1,3 @@
-using Entity.Base;
 using FSM.Base.State;
 
 public class Goblin_IdleState : BaseState
@@ -12,7 +11,7 @@ public class Goblin_IdleState : BaseState
 
     public override void OnStateExit()
     {
-        GetEntity<Goblin>().CheckNearestCharacter();
+        GetEntity<Goblin>().AnimCntrllr.ResetTrigger(GetEntity<Goblin>().AnimParam_Idle);
     }
 
     public override void OnStateUpdate()

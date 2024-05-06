@@ -11,12 +11,17 @@ public partial class Knight : BaseCharacter
     public override void AttackTarget()
     {
         Debug.Log("Attack target: " + target.name);
-        target.AttackedEntity(StatusData.so_StatusData.STR);
+        if (target.AttackedEntity(StatusData.so_StatusData.STR) == true)
+        {
+            target = null;
+        }
     }
 
-    public override void AttackedEntity(float damage)
+    public override bool AttackedEntity(float damage)
     {
         (StatusData as Knight_Status).CurrentHP -= damage;
+
+        return (StatusData as Knight_Status).CurrentHP <= 0;
     }
     #endregion
 
@@ -28,6 +33,11 @@ public partial class Knight : BaseCharacter
 
         foreach (var monster in EntityManager.Instance.spawnedMonstersDict.Values)
         {
+            if (monster.StatusData.CurrentHP <= 0)
+            {
+                continue;
+            }
+
             Vector2 monsPos = new Vector2(monster.transform.position.x, monster.transform.position.y);
             float distance = Vector2.Distance(charPos, monsPos);
             if (distance < leastDistance)
@@ -46,6 +56,16 @@ public partial class Knight : BaseCharacter
             return;
         }
 
+        Vector2 direction = (target.transform.position - transform.position).normalized;
+        if (direction.x < 0)
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        }
+
         transform.position = Vector2.MoveTowards(transform.position, target.transform.position, StatusData.so_StatusData.SPD * Time.deltaTime);
     }
     #endregion
@@ -58,8 +78,6 @@ public partial class Knight : BaseCharacter
 
     public override IEnumerator UpdateFSM()
     {
-        Collider2D detectedTarget = null;
-
         while (true)
         {
             if ((StatusData as Knight_Status).CurrentHP <= 0)
@@ -70,15 +88,15 @@ public partial class Knight : BaseCharacter
             switch (curState)
             {
                 case EState.Idle:
-                    TransitionFromIdle(detectedTarget);
+                    TransitionFromIdle();
                     break;
 
                 case EState.Move:
-                    TransitionFromMove(detectedTarget);
+                    TransitionFromMove();
                     break;
 
                 case EState.Battle:
-                    TransitionFromBattle(detectedTarget);
+                    TransitionFromBattle();
                     break;
 
                 case EState.Die:
@@ -97,24 +115,24 @@ public partial class Knight : BaseCharacter
     #endregion
 
     #region State Transition Method
-    private void TransitionFromIdle(Collider2D detectedTarget)
+    private void TransitionFromIdle()
     {
-        if (EntityManager.Instance.spawnedCharactersDict.Count != 0)
+        if (EntityManager.Instance.spawnedMonstersDict.Count != 0)
         {
             ChangeStateFSM(EState.Move);
             return;
         }
     }
 
-    private void TransitionFromMove(Collider2D detectedTarget)
+    private void TransitionFromMove()
     {
-        if (EntityManager.Instance.spawnedCharactersDict.Count == 0)
+        if (EntityManager.Instance.spawnedMonstersDict.Count == 0)
         {
             ChangeStateFSM(EState.Idle);
             return;
         }
 
-        detectedTarget = Physics2D.OverlapCircle(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius, targetLayerMask);
+        Collider2D detectedTarget = Physics2D.OverlapCircle(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius, targetLayerMask);
         if (detectedTarget != null && detectedTarget.GetComponent<BaseEntity>() == target)
         {
             ChangeStateFSM(EState.Battle);
@@ -122,16 +140,16 @@ public partial class Knight : BaseCharacter
         }
     }
 
-    private void TransitionFromBattle(Collider2D detectedTarget)
+    private void TransitionFromBattle()
     {
-        if (EntityManager.Instance.spawnedCharactersDict.Count == 0)
+        if (EntityManager.Instance.spawnedMonstersDict.Count == 0)
         {
             ChangeStateFSM(EState.Idle);
             return;
         }
 
-        detectedTarget = Physics2D.OverlapCircle(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius, targetLayerMask);
-        if (detectedTarget == null || target == null)
+        Collider2D detectedTarget = Physics2D.OverlapCircle(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius, targetLayerMask);
+        if (detectedTarget == null && target != null)
         {
             ChangeStateFSM(EState.Move);
             return;

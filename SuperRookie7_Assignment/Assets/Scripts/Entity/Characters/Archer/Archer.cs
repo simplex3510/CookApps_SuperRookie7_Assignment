@@ -22,6 +22,11 @@ public partial class Archer : BaseCharacter
         InitializeStatusData();
     }
 
+    public override void Start()
+    {
+        
+    }
+
     protected override void InitializeStateDict()
     {
         StateDict[EState.Idle] = new Archer_IdleState(this);

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 200
   str: 15
-  spd: 0
-  respawnTime: 0
+  spd: 2.5
+  respawnTime: 5
   atk_rng: 1
   atk_time: 1
   skl_rng: 2

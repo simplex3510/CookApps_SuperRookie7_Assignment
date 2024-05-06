@@ -11,9 +11,9 @@ public partial class Archer : BaseCharacter
 
     }
 
-    public override void AttackedEntity(float damage)
+    public override bool AttackedEntity(float damage)
     {
-
+        return false;
     }
 
     public override void ChangeStateFSM(EState nextState)

@@ -1,7 +1,4 @@
 using FSM.Base.State;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Knight_IdleState : BaseState
 {
@@ -14,7 +11,7 @@ public class Knight_IdleState : BaseState
 
     public override void OnStateExit()
     {
-        GetEntity<Knight>().CheckNearestMonster();
+        GetEntity<Knight>().AnimCntrllr.ResetTrigger(GetEntity<Knight>().AnimParam_Idle);
     }
 
     public override void OnStateUpdate()

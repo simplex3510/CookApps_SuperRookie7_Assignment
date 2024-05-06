@@ -12,15 +12,16 @@ namespace Entity.Base
         protected Animator animCntrllr;
         public Animator AnimCntrllr { get => animCntrllr; }
         [SerializeField]
-        protected float disappearDuration;
-        public float DisappearDuration { get => disappearDuration; }
+
 
         public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
         public int AnimParam_Move { get; private set; }
         public int AnimParam_Battle { get; private set; }
+        public int AnimParam_Skill { get; private set; }
         public int AnimParam_Attack { get; private set; }
         public int AnimParam_Die { get; private set; }
+        public int AnimParam_Victory { get; private set; }
 
         [SerializeField]
         protected EState curState;
@@ -35,17 +36,25 @@ namespace Entity.Base
         [SerializeField]
         private BaseStatus statusData;
         public BaseStatus StatusData { get => statusData; }
+        [SerializeField]
+        private float disappearDuration;
+        public float DisappearDuration { get => disappearDuration; }
+        [SerializeField]
+        private float lastAttackTime = 0;
+        public float LastAttackTime { get => lastAttackTime; set => lastAttackTime = value; }
 
         // BaseEntity
         protected override void AssignAnimationParameters()
         {
-            AnimParam_AtkTime = Animator.StringToHash("atk_time");
-
             AnimParam_Idle = Animator.StringToHash("idle");
             AnimParam_Move = Animator.StringToHash("move");
             AnimParam_Battle = Animator.StringToHash("isBattle");
             AnimParam_Attack = Animator.StringToHash("attack");
+            AnimParam_Skill = Animator.StringToHash("skill");
             AnimParam_Die = Animator.StringToHash("die");
+            AnimParam_Victory = Animator.StringToHash("victory");
+
+            AnimParam_AtkTime = Animator.StringToHash("atk_time");
         }
 
         // IFiniteStateMachinable
@@ -70,12 +79,13 @@ namespace Entity.Base
                 case EState.Die:
                     KnightFSM.ChangeState(StateDict[EState.Die]);
                     break;
+                case EState.Victory:
+                    KnightFSM.ChangeState(StateDict[EState.Victory]);
+                    break;
                 default:
                     Debug.LogError("ChangeStateFSM Error");
                     break;
             }
         }
-
-        // IDamagable
     }
 }

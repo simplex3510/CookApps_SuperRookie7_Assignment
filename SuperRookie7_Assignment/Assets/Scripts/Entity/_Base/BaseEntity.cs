@@ -8,17 +8,20 @@ namespace Entity.Base
 {
     public abstract class BaseEntity : MonoBehaviour, IAttackable, IFiniteStateMachinable
     {
+        // MonoBehaviour
+        public abstract void Start();
+
         // BaseEntity
         protected abstract void AssignAnimationParameters();
         protected abstract void InitializeStateDict();
         protected abstract void InitializeStatusData();
 
         // IFiniteStateMachinable
-        public abstract void AttackedEntity(float Damage);
+        public abstract void ChangeStateFSM(EState nextState);
         public abstract IEnumerator UpdateFSM();
 
-        // IDamagable
+        // IAttackable
         public abstract void AttackTarget();
-        public abstract void ChangeStateFSM(EState nextState);
+        public abstract bool AttackedEntity(float Damage);
     }
 }

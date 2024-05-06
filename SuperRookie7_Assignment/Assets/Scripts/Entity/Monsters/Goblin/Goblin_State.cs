@@ -10,43 +10,17 @@ public partial class Goblin
     public override void AttackTarget()
     {
         Debug.Log("Attack target: " + target.name);
-        target.AttackedEntity(StatusData.so_StatusData.STR);
+        if (target.AttackedEntity(StatusData.so_StatusData.STR) == true)
+        {
+            target = null;
+        }
     }
 
-    public override void AttackedEntity(float damage)
+    public override bool AttackedEntity(float damage)
     {
         (StatusData as Goblin_Status).CurrentHP -= damage;
-    }
-    #endregion
 
-    #region (Re)Spawn Method
-    public void StartRespawnCoroutine()
-    {
-        StartCoroutine(Respawn());
-    }
-
-    private IEnumerator Respawn()
-    {
-        float oldTime = Time.time;
-
-        while (true)
-        {
-            if (StatusData.so_StatusData.RespawnTime < Time.time - oldTime)
-            {
-                break;
-            }
-
-            yield return null;
-        }
-
-        InitializeEntity();
-        
-        Debug.Log("Respawn Ready");
-    }
-
-    public void Spawn()
-    {
-        gameObject.SetActive(true);
+        return (StatusData as Goblin_Status).CurrentHP <= 0;
     }
     #endregion
 
@@ -58,6 +32,11 @@ public partial class Goblin
 
         foreach (var character in EntityManager.Instance.spawnedCharactersDict.Values)
         {
+            if (character.StatusData.CurrentHP <= 0)
+            {
+                continue;
+            }
+
             Vector2 charPos = new Vector2(character.transform.position.x, character.transform.position.y);
             float distance = Vector2.Distance(monsPos, charPos);
             if (distance < leastDistance)
@@ -98,8 +77,6 @@ public partial class Goblin
 
     public override IEnumerator UpdateFSM()
     {
-        Collider2D detectedTarget = null;
-
         while (true)
         {
             if ((StatusData as Goblin_Status).CurrentHP <= 0)
@@ -110,15 +87,15 @@ public partial class Goblin
             switch (curState)
             {
                 case EState.Idle:
-                    TransitionFromIdle(detectedTarget);
+                    TransitionFromIdle();
                     break;
 
                 case EState.Move:
-                    TransitionFromMove(detectedTarget);
+                    TransitionFromMove();
                     break;
 
                 case EState.Battle:
-                    TransitionFromBattle(detectedTarget);
+                    TransitionFromBattle();
                     break;
 
                 case EState.Die:
@@ -137,7 +114,7 @@ public partial class Goblin
     #endregion
 
     #region State Transition Method
-    private void TransitionFromIdle(Collider2D detectedTarget)
+    private void TransitionFromIdle()
     {
         if (EntityManager.Instance.spawnedCharactersDict.Count != 0)
         {
@@ -146,7 +123,7 @@ public partial class Goblin
         }
     }
 
-    private void TransitionFromMove(Collider2D detectedTarget)
+    private void TransitionFromMove()
     {
         if (EntityManager.Instance.spawnedCharactersDict.Count == 0)
         {
@@ -154,7 +131,7 @@ public partial class Goblin
             return;
         }
 
-        detectedTarget = Physics2D.OverlapCircle(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius, targetLayerMask);
+        Collider2D detectedTarget = Physics2D.OverlapCircle(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius, targetLayerMask);
         if (detectedTarget != null && detectedTarget.GetComponent<BaseEntity>() == target)
         {
             ChangeStateFSM(EState.Battle);
@@ -162,7 +139,7 @@ public partial class Goblin
         }
     }
 
-    private void TransitionFromBattle(Collider2D detectedTarget)
+    private void TransitionFromBattle()
     {
         if (EntityManager.Instance.spawnedCharactersDict.Count == 0)
         {
@@ -170,8 +147,8 @@ public partial class Goblin
             return;
         }
 
-        detectedTarget = Physics2D.OverlapCircle(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius, targetLayerMask);
-        if (detectedTarget == null || target == null)
+        Collider2D detectedTarget = Physics2D.OverlapCircle(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius, targetLayerMask);
+        if (detectedTarget == null && target != null)
         {
             ChangeStateFSM(EState.Move);
             return;

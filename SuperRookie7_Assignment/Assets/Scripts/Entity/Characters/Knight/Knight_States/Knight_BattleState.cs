@@ -6,8 +6,6 @@ using FSM.Base.State;
 public class Knight_BattleState : BaseState
 {
     private float timeInterval;
-    private float lastAttackTime = 0;
-    private float timeSinceLastAttack;
 
     public Knight_BattleState(Knight entity) : base(entity) { }
 
@@ -18,6 +16,7 @@ public class Knight_BattleState : BaseState
 
     public override void OnStateExit()
     {
+        GetEntity<Knight>().AnimCntrllr.ResetTrigger(GetEntity<Knight>().AnimParam_Attack);
         GetEntity<Knight>().AnimCntrllr.SetBool(GetEntity<Knight>().AnimParam_Battle, false);
         GetEntity<Knight>().CheckNearestMonster();
     }
@@ -25,13 +24,13 @@ public class Knight_BattleState : BaseState
     public override void OnStateUpdate()
     {
         timeInterval = 1f / GetEntity<Knight>().StatusData.so_StatusData.ATK_Time;
-        timeSinceLastAttack = Time.time - lastAttackTime;
 
-        if (timeInterval <= timeSinceLastAttack)
+        if (timeInterval <= Time.time - GetEntity<Knight>().LastAttackTime)
         {
             GetEntity<Knight>().AnimCntrllr.SetFloat(GetEntity<Knight>().AnimParam_AtkTime,
                                                      GetEntity<Knight>().StatusData.so_StatusData.ATK_Time);
             GetEntity<Knight>().AnimCntrllr.SetTrigger(GetEntity<Knight>().AnimParam_Attack);
+            GetEntity<Knight>().LastAttackTime = Time.time;
         }
     }
 }

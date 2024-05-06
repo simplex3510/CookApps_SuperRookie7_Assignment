@@ -1,7 +1,4 @@
 using FSM.Base.State;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Knight_MoveState : BaseState
 {
@@ -9,16 +6,17 @@ public class Knight_MoveState : BaseState
 
     public override void OnStateEnter()
     {
-
+        GetEntity<Knight>().AnimCntrllr.SetTrigger(GetEntity<Knight>().AnimParam_Move);
+        GetEntity<Knight>().CheckNearestMonster();
     }
 
     public override void OnStateExit()
     {
-
+        GetEntity<Knight>().AnimCntrllr.ResetTrigger(GetEntity<Knight>().AnimParam_Move);
     }
 
     public override void OnStateUpdate()
     {
-
+        GetEntity<Knight>().MoveToTarget();
     }
 }

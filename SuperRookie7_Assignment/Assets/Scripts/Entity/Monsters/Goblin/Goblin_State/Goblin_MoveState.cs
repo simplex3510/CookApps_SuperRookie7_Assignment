@@ -7,11 +7,12 @@ public class Goblin_MoveState : BaseState
     public override void OnStateEnter()
     {
         GetEntity<Goblin>().AnimCntrllr.SetTrigger(GetEntity<Goblin>().AnimParam_Move);
+        GetEntity<Goblin>().CheckNearestCharacter();
     }
 
     public override void OnStateExit()
     {
-        GetEntity<Goblin>().CheckNearestCharacter();
+        GetEntity<Goblin>().AnimCntrllr.ResetTrigger(GetEntity<Goblin>().AnimParam_Move);
     }
 
     public override void OnStateUpdate()

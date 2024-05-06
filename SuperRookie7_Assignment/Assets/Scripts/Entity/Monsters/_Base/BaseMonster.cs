@@ -9,15 +9,12 @@ namespace Entity.Base
     public abstract class BaseMonster : BaseEntity
     {
         [SerializeField]
-        protected Animator animCntrllr;
-        public Animator AnimCntrllr { get => animCntrllr; }
-        [SerializeField]
-        protected float disappearDuration;
-        public float DisappearDuration { get => disappearDuration; }
+        protected Transform rootTransfrom;
+        public Transform Root { get => rootTransfrom; }
 
         [SerializeField]
-        protected Rigidbody2D rigidbody_2D;
-        public Rigidbody2D Rigidbody_2D {  get => rigidbody_2D; }
+        protected Animator animCntrllr;
+        public Animator AnimCntrllr { get => animCntrllr; }
 
         public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
@@ -39,17 +36,23 @@ namespace Entity.Base
         [SerializeField]
         private BaseStatus statusData;
         public BaseStatus StatusData { get => statusData; }
+        [SerializeField]
+        private float disappearDuration;
+        public float DisappearDuration { get => disappearDuration; }
+        [SerializeField]
+        private float lastAttackTime = 0;
+        public float LastAttackTime { get => lastAttackTime; set => lastAttackTime = value; }
 
         // BaseEntity
         protected override void AssignAnimationParameters()
         {
-            AnimParam_AtkTime = Animator.StringToHash("atk_time");
-
             AnimParam_Idle = Animator.StringToHash("idle");
             AnimParam_Move = Animator.StringToHash("move");
             AnimParam_Battle = Animator.StringToHash("isBattle");
             AnimParam_Attack = Animator.StringToHash("attack");
             AnimParam_Die = Animator.StringToHash("die");
+
+            AnimParam_AtkTime = Animator.StringToHash("atk_time");
         }
 
         // IFiniteStateMachinable
@@ -76,7 +79,5 @@ namespace Entity.Base
                     break;
             }
         }
-
-        // IDamagable
     }
 }

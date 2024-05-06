@@ -21,18 +21,17 @@ public partial class Knight : BaseCharacter
         KnightFSM = new FiniteStateMachine(StateDict[curState]);
 
         InitializeStatusData();
+        EntityManager.Instance.spawnedCharactersDict.Add(GetHashCode(), this);
     }
 
     private void OnEnable()
     {
-        EntityManager.Instance.spawnedCharactersDict.Add(GetHashCode(), this);
         StartCoroutine(UpdateFSM());
     }
 
-    private void OnDisable()
+    public override void Start()
     {
-        StopCoroutine(UpdateFSM());
-        EntityManager.Instance.spawnedCharactersDict.Remove(GetHashCode());
+        InitializeEntity();
     }
     #endregion
 

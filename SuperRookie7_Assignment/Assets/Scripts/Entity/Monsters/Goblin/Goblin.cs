@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using Entity.Base;
 using FSM.Base;
@@ -7,10 +8,6 @@ using Singleton.Manager;
 
 public partial class Goblin : BaseMonster
 {
-    [SerializeField]
-    private Transform rootTransfrom;
-    public Transform Root { get { return rootTransfrom; } }
-
     #region Unity Life-Cycle
     private void Awake()
     {
@@ -26,18 +23,17 @@ public partial class Goblin : BaseMonster
         GoblinFSM = new FiniteStateMachine(StateDict[curState]);
 
         InitializeStatusData();
+        EntityManager.Instance.spawnedMonstersDict.Add(GetHashCode(), this);
     }
 
     private void OnEnable()
     {
-        EntityManager.Instance.spawnedMonstersDict.Add(GetHashCode(), this);
         StartCoroutine(UpdateFSM());
     }
 
-    private void OnDisable()
+    public override void Start()
     {
-        StopCoroutine(UpdateFSM());
-        EntityManager.Instance.spawnedMonstersDict.Remove(GetHashCode());
+        InitializeEntity();
     }
     #endregion
 
