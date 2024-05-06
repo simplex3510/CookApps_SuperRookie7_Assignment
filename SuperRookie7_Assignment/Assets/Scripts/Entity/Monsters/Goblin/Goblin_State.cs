@@ -1,16 +1,16 @@
 using UnityEngine;
 using System.Collections;
-using Singleton.Manager;
-using FSM.Base.State;
 using Entity.Base;
+using FSM.Base.State;
+using Singleton.Manager;
+using UnityEngine.TextCore.Text;
 
 public partial class Goblin
 {
     #region IAttackable Method
     public override void AttackTarget()
     {
-        Debug.Log("Attack target: " + target.name);
-        if (target.AttackedEntity(StatusData.so_StatusData.STR) == true)
+        if (target != null && target.AttackedEntity(StatusData.so_StatusData.STR) == true)
         {
             target = null;
         }
@@ -108,6 +108,7 @@ public partial class Goblin
             }
 
             GoblinFSM.UpdateState();
+
             yield return null;
         }
     }
@@ -118,14 +119,29 @@ public partial class Goblin
     {
         if (EntityManager.Instance.spawnedCharactersDict.Count != 0)
         {
-            ChangeStateFSM(EState.Move);
-            return;
+            foreach (var character in EntityManager.Instance.spawnedCharactersDict.Values)
+            {
+                if (character.CurState != EState.Die)
+                {
+                    ChangeStateFSM(EState.Move);
+                    return;
+                }
+            }
         }
     }
 
     private void TransitionFromMove()
     {
-        if (EntityManager.Instance.spawnedCharactersDict.Count == 0)
+        int dieCounter = 0;
+        foreach(var character in EntityManager.Instance.spawnedCharactersDict.Values)
+        {
+            if (character.CurState == EState.Die)
+            {
+                ++dieCounter;
+            }
+        }
+
+        if (dieCounter == EntityManager.Instance.spawnedCharactersDict.Count)
         {
             ChangeStateFSM(EState.Idle);
             return;
@@ -141,7 +157,7 @@ public partial class Goblin
 
     private void TransitionFromBattle()
     {
-        if (EntityManager.Instance.spawnedCharactersDict.Count == 0)
+        if (target == null || EntityManager.Instance.spawnedCharactersDict.Count == 0)
         {
             ChangeStateFSM(EState.Idle);
             return;

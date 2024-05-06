@@ -16,7 +16,6 @@ public class Knight_BattleState : BaseState
 
     public override void OnStateExit()
     {
-        GetEntity<Knight>().AnimCntrllr.ResetTrigger(GetEntity<Knight>().AnimParam_Attack);
         GetEntity<Knight>().AnimCntrllr.SetBool(GetEntity<Knight>().AnimParam_Battle, false);
         GetEntity<Knight>().CheckNearestMonster();
     }

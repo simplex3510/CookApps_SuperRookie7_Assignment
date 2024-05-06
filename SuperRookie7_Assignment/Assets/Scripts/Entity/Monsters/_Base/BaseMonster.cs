@@ -25,6 +25,7 @@ namespace Entity.Base
 
         [SerializeField]
         protected EState curState;
+        public EState CurState { get => curState; }
         protected Dictionary<EState, IStatable> StateDict { get; set; }
         protected FiniteStateMachine GoblinFSM { get; set; }
 

@@ -22,9 +22,21 @@ public partial class Archer : BaseCharacter
         InitializeStatusData();
     }
 
-    public override void Start()
+    private void Start()
     {
         
+    }
+
+    public override void InitializeEntity()
+    {
+        InitializeStatusData();
+
+        animCntrllr.ResetTrigger(AnimParam_Idle);
+        animCntrllr.ResetTrigger(AnimParam_Move);
+        animCntrllr.ResetTrigger(AnimParam_Attack);
+        animCntrllr.ResetTrigger(AnimParam_Die);
+
+        ChangeStateFSM(EState.Idle);
     }
 
     protected override void InitializeStateDict()

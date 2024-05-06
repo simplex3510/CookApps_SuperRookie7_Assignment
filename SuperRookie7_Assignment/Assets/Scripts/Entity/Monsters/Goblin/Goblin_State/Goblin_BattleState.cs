@@ -16,7 +16,6 @@ public class Goblin_BattleState : BaseState
 
     public override void OnStateExit()
     {
-        GetEntity<Goblin>().AnimCntrllr.ResetTrigger(GetEntity<Goblin>().AnimParam_Attack);
         GetEntity<Goblin>().AnimCntrllr.SetBool(GetEntity<Goblin>().AnimParam_Battle, false);
         GetEntity<Goblin>().CheckNearestCharacter();
     }

@@ -12,7 +12,7 @@ public class Goblin_MoveState : BaseState
 
     public override void OnStateExit()
     {
-        GetEntity<Goblin>().AnimCntrllr.ResetTrigger(GetEntity<Goblin>().AnimParam_Move);
+
     }
 
     public override void OnStateUpdate()

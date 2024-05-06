@@ -1,17 +1,15 @@
+using UnityEngine;
+using System.Collections;
 using Entity.Base;
 using FSM.Base.State;
 using Singleton.Manager;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public partial class Knight : BaseCharacter
 {
     #region IAttackable Method
     public override void AttackTarget()
     {
-        Debug.Log("Attack target: " + target.name);
-        if (target.AttackedEntity(StatusData.so_StatusData.STR) == true)
+        if (target != null && target.AttackedEntity(StatusData.so_StatusData.STR) == true)
         {
             target = null;
         }
@@ -56,7 +54,7 @@ public partial class Knight : BaseCharacter
             return;
         }
 
-        Vector2 direction = (target.transform.position - transform.position).normalized;
+        Vector2 direction = (target.transform.parent.position - transform.position).normalized;
         if (direction.x < 0)
         {
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -66,7 +64,7 @@ public partial class Knight : BaseCharacter
             transform.rotation = Quaternion.Euler(0f, 180f, 0f);
         }
 
-        transform.position = Vector2.MoveTowards(transform.position, target.transform.position, StatusData.so_StatusData.SPD * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, target.transform.parent.position, StatusData.so_StatusData.SPD * Time.deltaTime);
     }
     #endregion
 
@@ -109,6 +107,7 @@ public partial class Knight : BaseCharacter
             }
 
             KnightFSM.UpdateState();
+
             yield return null;
         }
     }
@@ -142,7 +141,7 @@ public partial class Knight : BaseCharacter
 
     private void TransitionFromBattle()
     {
-        if (EntityManager.Instance.spawnedMonstersDict.Count == 0)
+        if (target == null || EntityManager.Instance.spawnedMonstersDict.Count == 0)
         {
             ChangeStateFSM(EState.Idle);
             return;

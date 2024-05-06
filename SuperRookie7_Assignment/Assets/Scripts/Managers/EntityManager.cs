@@ -7,6 +7,9 @@ namespace Singleton.Manager
 {
     public class EntityManager : MonoSingleton<EntityManager>
     {
+        [SerializeField]
+        private float timeScale;
+
         public Dictionary<int, BaseCharacter> spawnedCharactersDict = new Dictionary<int, BaseCharacter>();
         public Dictionary<int, BaseMonster> spawnedMonstersDict = new Dictionary<int, BaseMonster>();
 
@@ -27,12 +30,14 @@ namespace Singleton.Manager
         #region Unity List-Cycle
         private void Awake()
         {
-            Time.timeScale = 0.5f;
+            
             //DonDestroySingleton();
         }
 
         private void Update()
         {
+            Time.timeScale = timeScale;
+
             // When the time is monster spawn time
             if (monsterSpawnCycleTime < Time.time - lastSpawnTime)
             {
@@ -106,13 +111,13 @@ namespace Singleton.Manager
 
                 (entity as BaseMonster).Root.transform.position = new Vector2(xPos, yPos);
                 //(entity as BaseMonster).Root.gameObject.SetActive(true);
-                entity.Start();
+                entity.InitializeEntity();
             }
             else
             {
                 entity.transform.position = Vector2.zero;
                 //entity.gameObject.SetActive(true);
-                entity.Start();
+                entity.InitializeEntity();
             }
         }
     }

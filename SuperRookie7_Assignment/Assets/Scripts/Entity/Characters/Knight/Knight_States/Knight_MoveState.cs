@@ -12,7 +12,7 @@ public class Knight_MoveState : BaseState
 
     public override void OnStateExit()
     {
-        GetEntity<Knight>().AnimCntrllr.ResetTrigger(GetEntity<Knight>().AnimParam_Move);
+
     }
 
     public override void OnStateUpdate()

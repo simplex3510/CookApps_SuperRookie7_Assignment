@@ -24,20 +24,22 @@ public partial class Knight : BaseCharacter
         EntityManager.Instance.spawnedCharactersDict.Add(GetHashCode(), this);
     }
 
-    private void OnEnable()
-    {
-        StartCoroutine(UpdateFSM());
-    }
-
-    public override void Start()
+    private void Start()
     {
         InitializeEntity();
+        StartCoroutine(UpdateFSM());
     }
     #endregion
 
-    protected void InitializeEntity()
+    public override void InitializeEntity()
     {
         InitializeStatusData();
+
+        animCntrllr.ResetTrigger(AnimParam_Idle);
+        animCntrllr.ResetTrigger(AnimParam_Move);
+        animCntrllr.ResetTrigger(AnimParam_Attack);
+        animCntrllr.ResetTrigger(AnimParam_Die);
+
         ChangeStateFSM(EState.Idle);
     }
 

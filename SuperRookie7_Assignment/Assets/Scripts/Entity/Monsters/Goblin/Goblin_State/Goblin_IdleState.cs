@@ -11,7 +11,7 @@ public class Goblin_IdleState : BaseState
 
     public override void OnStateExit()
     {
-        GetEntity<Goblin>().AnimCntrllr.ResetTrigger(GetEntity<Goblin>().AnimParam_Idle);
+
     }
 
     public override void OnStateUpdate()

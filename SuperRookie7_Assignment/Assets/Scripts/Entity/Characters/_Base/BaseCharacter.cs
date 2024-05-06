@@ -11,8 +11,6 @@ namespace Entity.Base
         [SerializeField]
         protected Animator animCntrllr;
         public Animator AnimCntrllr { get => animCntrllr; }
-        [SerializeField]
-
 
         public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
@@ -25,6 +23,7 @@ namespace Entity.Base
 
         [SerializeField]
         protected EState curState;
+        public EState CurState { get => curState; }
         protected Dictionary<EState, IStatable> StateDict { get; set; }
         protected FiniteStateMachine KnightFSM { get; set; }
 
