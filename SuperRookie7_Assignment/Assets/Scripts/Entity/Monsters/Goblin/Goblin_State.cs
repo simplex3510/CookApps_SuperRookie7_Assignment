@@ -3,7 +3,6 @@ using System.Collections;
 using Entity.Base;
 using FSM.Base.State;
 using Singleton.Manager;
-using UnityEngine.TextCore.Text;
 
 public partial class Goblin
 {
@@ -18,9 +17,15 @@ public partial class Goblin
 
     public override bool AttackedEntity(float damage)
     {
-        (StatusData as Goblin_Status).CurrentHP -= damage;
+        StatusData.CurrentHP -= damage;
 
-        return (StatusData as Goblin_Status).CurrentHP <= 0;
+        if (StatusData.CurrentHP <= 0)
+        {
+            ECurState = EState.Die;
+            return true;
+        }
+
+        return false;
     }
     #endregion
 
@@ -28,21 +33,21 @@ public partial class Goblin
     public void CheckNearestCharacter()
     {
         float leastDistance = float.MaxValue;
-        Vector2 monsPos = new Vector2(Root.transform.position.x, Root.transform.position.y);
 
-        foreach (var character in EntityManager.Instance.spawnedCharactersDict.Values)
+        if (EntityManager.Instance.spawnedCharactersDict.Count == 0)
         {
-            if (character.StatusData.CurrentHP <= 0)
+            target = null;
+        }
+        else
+        {
+            foreach (var character in EntityManager.Instance.spawnedCharactersDict.Values)
             {
-                continue;
-            }
-
-            Vector2 charPos = new Vector2(character.transform.position.x, character.transform.position.y);
-            float distance = Vector2.Distance(monsPos, charPos);
-            if (distance < leastDistance)
-            {
-                leastDistance = distance;
-                target = character;
+                float distance = Vector2.Distance(Root.transform.position, character.transform.position);
+                if (distance < leastDistance)
+                {
+                    leastDistance = distance;
+                    target = character;
+                }
             }
         }
     }
@@ -52,6 +57,12 @@ public partial class Goblin
         if (target == null)
         {
             Debug.LogError("Can not Move to Target which is null");
+            return;
+        }
+
+        if (target.gameObject.activeSelf == false)
+        {
+            CheckNearestCharacter();
             return;
         }
 
@@ -79,14 +90,12 @@ public partial class Goblin
     {
         while (true)
         {
-            Debug.Log("GoblinFSM update");
-            if ((StatusData as Goblin_Status).CurrentHP <= 0)
+            switch (ECurState)
             {
-                curState = EState.Die;
-            }
+                case EState.None:
+                    Debug.LogWarning("None State");
+                    break;
 
-            switch (curState)
-            {
                 case EState.Idle:
                     TransitionFromIdle();
                     break;
@@ -100,7 +109,7 @@ public partial class Goblin
                     break;
 
                 case EState.Die:
-                    TransitionFromDie();
+                    ChangeStateFSM(EState.Die);
                     break;
 
                 default:
@@ -118,38 +127,21 @@ public partial class Goblin
     #region State Transition Method
     private void TransitionFromIdle()
     {
-        if (EntityManager.Instance.spawnedCharactersDict.Count != 0)
+        if (0 < EntityManager.Instance.spawnedCharactersDict.Count)
         {
-            foreach (var character in EntityManager.Instance.spawnedCharactersDict.Values)
-            {
-                if (character.CurState != EState.Die)
-                {
-                    ChangeStateFSM(EState.Move);
-                    return;
-                }
-            }
+            ChangeStateFSM(EState.Move);
+            return;
         }
     }
 
     private void TransitionFromMove()
     {
-        int dieCounter = 0;
-        foreach(var character in EntityManager.Instance.spawnedCharactersDict.Values)
-        {
-            if (character.CurState == EState.Die)
-            {
-                ++dieCounter;
-            }
-        }
-
-        if (dieCounter == EntityManager.Instance.spawnedCharactersDict.Count)
+        if (target == null)
         {
             ChangeStateFSM(EState.Idle);
             return;
         }
-
-        Collider2D detectedTarget = Physics2D.OverlapCircle(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius, targetLayerMask);
-        if (detectedTarget != null && detectedTarget.GetComponent<BaseEntity>() == target)
+        else if (IsBattle == true)
         {
             ChangeStateFSM(EState.Battle);
             return;
@@ -158,23 +150,11 @@ public partial class Goblin
 
     private void TransitionFromBattle()
     {
-        if (target == null || EntityManager.Instance.spawnedCharactersDict.Count == 0)
+        if (target == null || IsBattle == false)
         {
             ChangeStateFSM(EState.Idle);
             return;
         }
-
-        Collider2D detectedTarget = Physics2D.OverlapCircle(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius, targetLayerMask);
-        if (detectedTarget == null && target != null)
-        {
-            ChangeStateFSM(EState.Move);
-            return;
-        }
-    }
-
-    private void TransitionFromDie()
-    {
-        ChangeStateFSM(EState.Die);
     }
     #endregion
 

@@ -16,6 +16,10 @@ namespace Entity.Base
         protected Animator animCntrllr;
         public Animator AnimCntrllr { get => animCntrllr; }
 
+        [SerializeField]
+        protected CircleCollider2D circleCollider;
+        public CircleCollider2D CircleCollider { get => circleCollider; }
+
         public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
         public int AnimParam_Move { get; private set; }
@@ -24,10 +28,23 @@ namespace Entity.Base
         public int AnimParam_Die { get; private set; }
 
         [SerializeField]
-        protected EState curState;
-        public EState CurState { get => curState; }
+        private EState eCurState = EState.None;
+        public EState ECurState
+        {
+            get
+            {
+                return eCurState;
+            }
+            set
+            {
+                //Debug.Log($"Goblin - Before State: {eCurState} | After State: {value}");
+                eCurState = value;
+            }
+        }
         protected Dictionary<EState, IStatable> StateDict { get; set; }
         protected FiniteStateMachine GoblinFSM { get; set; }
+        protected bool IsBattle { get; set; }
+        public float LastAttackTime { get; set; }
 
         [SerializeField]
         protected BaseEntity target;
@@ -40,11 +57,13 @@ namespace Entity.Base
         [SerializeField]
         private float disappearDuration;
         public float DisappearDuration { get => disappearDuration; }
-        [SerializeField]
-        private float lastAttackTime = 0;
-        public float LastAttackTime { get => lastAttackTime; set => lastAttackTime = value; }
 
         // BaseEntity
+        protected override void InitializeStateDict()
+        {
+            StateDict[EState.None] = new BaseEntity_NoneState(null);
+        }
+
         protected override void AssignAnimationParameters()
         {
             AnimParam_Idle = Animator.StringToHash("idle");
@@ -59,9 +78,9 @@ namespace Entity.Base
         // IFiniteStateMachinable
         public override void ChangeStateFSM(EState nextState)
         {
-            curState = nextState;
+            ECurState = nextState;
 
-            switch (curState)
+            switch (ECurState)
             {
                 case EState.Idle:
                     GoblinFSM.ChangeState(StateDict[EState.Idle]);

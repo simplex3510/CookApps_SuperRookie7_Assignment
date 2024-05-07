@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4299704033523954663}
   - component: {fileID: 7859630126101546327}
   - component: {fileID: 4828223906947666627}
-  - component: {fileID: 59579409615474968}
+  - component: {fileID: 1583425954002855301}
   m_Layer: 7
   m_Name: Knight
   m_TagString: Untagged
@@ -71,17 +71,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animCntrllr: {fileID: 95000011895321844}
-  curState: 1
+  circleCollider: {fileID: 1583425954002855301}
+  curState: 0
   target: {fileID: 0}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 256
   statusData: {fileID: 7859630126101546327}
   disappearDuration: 0
-  lastAttackTime: 0
   gizmoOffestX: 0
-  gizmoOffestY: 0.4
-  gizmoOffsetRadius: 0.4
+  gizmoOffestY: 0.5
+  gizmoOffsetRadius: 0.5
 --- !u!114 &7859630126101546327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,8 +123,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &59579409615474968
-CapsuleCollider2D:
+--- !u!58 &1583425954002855301
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -155,9 +155,9 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.4}
-  m_Size: {x: 0.8, y: 0.8}
-  m_Direction: 0
+  m_Offset: {x: 0, y: 0.5}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &1000011164445256
 GameObject:
   m_ObjectHideFlags: 0

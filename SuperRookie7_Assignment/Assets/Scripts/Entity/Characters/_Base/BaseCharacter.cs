@@ -26,11 +26,23 @@ namespace Entity.Base
         public int AnimParam_Victory { get; private set; }
 
         [SerializeField]
-        protected EState curState;
-        public EState CurState { get => curState; }
+        private EState eCurState = EState.None;
+        public EState ECurState 
+        {
+            get
+            {
+                return eCurState;
+            }
+            set
+            {
+                // Debug.Log($"Knight - Before State: {eCurState} | After State: {value}");
+                eCurState = value;
+            } 
+        }
         protected Dictionary<EState, IStatable> StateDict { get; set; }
         protected FiniteStateMachine KnightFSM { get; set; }
         protected bool IsBattle { get; set; }
+        public float LastAttackTime { get; set; }
 
         [SerializeField]
         protected BaseEntity target;
@@ -45,9 +57,12 @@ namespace Entity.Base
         private float disappearDuration;
         public float DisappearDuration { get => disappearDuration; }
 
-        public float LastAttackTime { get; set; }
-
         // BaseEntity
+        protected override void InitializeStateDict()
+        {
+            StateDict[EState.None] = new BaseEntity_NoneState(null);
+        }
+
         protected override void AssignAnimationParameters()
         {
             AnimParam_Idle = Animator.StringToHash("idle");
@@ -64,10 +79,13 @@ namespace Entity.Base
         // IFiniteStateMachinable
         public override void ChangeStateFSM(EState nextState)
         {
-            curState = nextState;
+            ECurState = nextState;
 
-            switch (curState)
+            switch (ECurState)
             {
+                case EState.None:
+                    Debug.LogWarning("None State");
+                    break;
                 case EState.Idle:
                     KnightFSM.ChangeState(StateDict[EState.Idle]);
                     break;
@@ -76,9 +94,6 @@ namespace Entity.Base
                     break;
                 case EState.Battle:
                     KnightFSM.ChangeState(StateDict[EState.Battle]);
-                    break;
-                case EState.Skill:
-                    KnightFSM.ChangeState(StateDict[EState.Skill]);
                     break;
                 case EState.Die:
                     KnightFSM.ChangeState(StateDict[EState.Die]);

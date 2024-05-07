@@ -19,8 +19,7 @@ public partial class Knight : BaseCharacter
         StateDict = new Dictionary<EState, IStatable>();
         InitializeStateDict();
 
-        curState = EState.Idle;
-        KnightFSM = new FiniteStateMachine(StateDict[curState]);
+        KnightFSM = new FiniteStateMachine(StateDict[ECurState]);
 
         InitializeStatusData();
 
@@ -51,6 +50,20 @@ public partial class Knight : BaseCharacter
         }
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!IsBattle)
+        {
+            if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
+            {
+                if (collision.gameObject.GetComponentInChildren<BaseMonster>() == target)
+                {
+                    IsBattle = true;
+                }
+            }
+        }
+    }
+
     private void OnCollisionExit2D(Collision2D collision)
     {
         IsBattle = false;
@@ -74,6 +87,7 @@ public partial class Knight : BaseCharacter
 
     protected override void InitializeStateDict()
     {
+        base.InitializeStateDict();
         StateDict[EState.Idle] = new Knight_IdleState(this);
         StateDict[EState.Move] = new Knight_MoveState(this);
         StateDict[EState.Battle] = new Knight_BattleState(this);
@@ -88,6 +102,6 @@ public partial class Knight : BaseCharacter
 
     protected override void InitializeStatusData()
     {
-        (StatusData as Knight_Status).CurrentHP = StatusData.so_StatusData.MaxHP;
+        StatusData.CurrentHP = StatusData.so_StatusData.MaxHP;
     }
 }

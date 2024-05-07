@@ -1,10 +1,9 @@
 using UnityEngine;
 using System.Collections;
-using Entity.Base;
 using FSM.Base.State;
 using Singleton.Manager;
 
-public partial class Knight : BaseCharacter
+public partial class Knight
 {
     #region IAttackable Method
     public override void AttackTarget()
@@ -17,11 +16,11 @@ public partial class Knight : BaseCharacter
 
     public override bool AttackedEntity(float damage)
     {
-        (StatusData as Knight_Status).CurrentHP -= damage;
+        StatusData.CurrentHP -= damage;
 
         if (StatusData.CurrentHP <= 0)
         {
-            curState = EState.Die;
+            ECurState = EState.Die;
             return true;
         }
 
@@ -60,7 +59,6 @@ public partial class Knight : BaseCharacter
             return;
         }
 
-        Debug.Log("target: " + target.gameObject.activeSelf);
         if (target.transform.parent.gameObject.activeSelf == false)
         {
             CheckNearestMonster();
@@ -91,8 +89,12 @@ public partial class Knight : BaseCharacter
     {
         while (true)
         {
-            switch (curState)
+            switch (ECurState)
             {
+                case EState.None:
+                    Debug.LogWarning("None State");
+                    break;
+
                 case EState.Idle:
                     TransitionFromIdle();
                     break;
@@ -147,7 +149,7 @@ public partial class Knight : BaseCharacter
 
     private void TransitionFromBattle()
     {
-        if (target == null)
+        if (target == null || IsBattle == false)
         {
             ChangeStateFSM(EState.Idle);
             return;

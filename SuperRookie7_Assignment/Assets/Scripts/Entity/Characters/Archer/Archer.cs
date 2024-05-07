@@ -16,8 +16,8 @@ public partial class Archer : BaseCharacter
         InitializeStateDict();
 
 
-        curState = EState.Idle;
-        KnightFSM = new FiniteStateMachine(StateDict[curState]);
+        ECurState = EState.Idle;
+        KnightFSM = new FiniteStateMachine(StateDict[ECurState]);
 
         InitializeStatusData();
     }

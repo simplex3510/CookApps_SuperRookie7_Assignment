@@ -44,7 +44,7 @@ namespace Singleton.Manager
                 // if monster count is bigger than capacity - respawn
                 if (monsterCapacity <= monsterCount)
                 {
-                    if (readyMonsterQueue.Count != 0)
+                    if (0 < readyMonsterQueue.Count)
                     {
                         Respawn<BaseMonster>(readyMonsterQueue.Dequeue());
                         lastSpawnTime = Time.time;
