@@ -12,6 +12,10 @@ namespace Entity.Base
         protected Animator animCntrllr;
         public Animator AnimCntrllr { get => animCntrllr; }
 
+        [SerializeField]
+        protected CircleCollider2D circleCollider;
+        public CircleCollider2D CircleCollider { get => circleCollider; }
+
         public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
         public int AnimParam_Move { get; private set; }
@@ -26,6 +30,7 @@ namespace Entity.Base
         public EState CurState { get => curState; }
         protected Dictionary<EState, IStatable> StateDict { get; set; }
         protected FiniteStateMachine KnightFSM { get; set; }
+        protected bool IsBattle { get; set; }
 
         [SerializeField]
         protected BaseEntity target;
@@ -35,12 +40,12 @@ namespace Entity.Base
         [SerializeField]
         private BaseStatus statusData;
         public BaseStatus StatusData { get => statusData; }
+
         [SerializeField]
         private float disappearDuration;
         public float DisappearDuration { get => disappearDuration; }
-        [SerializeField]
-        private float lastAttackTime = 0;
-        public float LastAttackTime { get => lastAttackTime; set => lastAttackTime = value; }
+
+        public float LastAttackTime { get; set; }
 
         // BaseEntity
         protected override void AssignAnimationParameters()

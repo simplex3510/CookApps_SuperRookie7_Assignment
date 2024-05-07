@@ -22,12 +22,12 @@ public partial class Archer : BaseCharacter
         InitializeStatusData();
     }
 
-    private void Start()
+    public override void Start()
     {
         
     }
 
-    public override void InitializeEntity()
+    protected override void InitializeEntity()
     {
         InitializeStatusData();
 

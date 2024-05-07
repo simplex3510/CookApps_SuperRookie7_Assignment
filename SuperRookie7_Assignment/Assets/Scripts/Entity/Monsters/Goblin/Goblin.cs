@@ -23,17 +23,27 @@ public partial class Goblin : BaseMonster
         GoblinFSM = new FiniteStateMachine(StateDict[curState]);
 
         InitializeStatusData();
+    }
+
+    private void OnEnable()
+    {
         EntityManager.Instance.spawnedMonstersDict.Add(GetHashCode(), this);
     }
 
-    private void Start()
+    public override void Start()
     {
         InitializeEntity();
         StartCoroutine(UpdateFSM());
     }
+
+    private void OnDisable()
+    {
+        Debug.Log("Goblin OnDisable");
+        EntityManager.Instance.spawnedMonstersDict.Remove(GetHashCode());
+    }
     #endregion
 
-    public override void InitializeEntity()
+    protected override void InitializeEntity()
     {
         InitializeStatusData();
 

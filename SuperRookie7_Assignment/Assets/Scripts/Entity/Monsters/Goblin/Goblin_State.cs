@@ -79,6 +79,7 @@ public partial class Goblin
     {
         while (true)
         {
+            Debug.Log("GoblinFSM update");
             if ((StatusData as Goblin_Status).CurrentHP <= 0)
             {
                 curState = EState.Die;

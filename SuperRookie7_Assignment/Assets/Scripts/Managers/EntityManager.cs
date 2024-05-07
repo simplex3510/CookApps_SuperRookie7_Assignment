@@ -111,13 +111,13 @@ namespace Singleton.Manager
 
                 (entity as BaseMonster).Root.transform.position = new Vector2(xPos, yPos);
                 //(entity as BaseMonster).Root.gameObject.SetActive(true);
-                entity.InitializeEntity();
+                entity.Start();
             }
             else
             {
                 entity.transform.position = Vector2.zero;
                 //entity.gameObject.SetActive(true);
-                entity.InitializeEntity();
+                entity.Start();
             }
         }
     }

@@ -14,6 +14,8 @@ public partial class Knight : BaseCharacter
         animCntrllr = GetComponent<Animator>();
         AssignAnimationParameters();
 
+        circleCollider = GetComponent<CircleCollider2D>();
+
         StateDict = new Dictionary<EState, IStatable>();
         InitializeStateDict();
 
@@ -21,18 +23,45 @@ public partial class Knight : BaseCharacter
         KnightFSM = new FiniteStateMachine(StateDict[curState]);
 
         InitializeStatusData();
+
         EntityManager.Instance.spawnedCharactersDict.Add(GetHashCode(), this);
+
+        StartCoroutine(UpdateFSM());
     }
 
-    private void Start()
+    public override void Start()
     {
         InitializeEntity();
-        StartCoroutine(UpdateFSM());
+    }
+
+    private void FixedUpdate()
+    {
+        CircleCollider.radius = StatusData.so_StatusData.ATK_RNG / 2;
+        CircleCollider.offset = new Vector2 (0, CircleCollider.radius);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
+        {
+            if (collision.gameObject.GetComponentInChildren<BaseMonster>() == target)
+            {
+                IsBattle = true;
+            } 
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        IsBattle = false;
     }
     #endregion
 
-    public override void InitializeEntity()
+    protected override void InitializeEntity()
     {
+        IsBattle = false;
+        LastAttackTime = 0f;
+
         InitializeStatusData();
 
         animCntrllr.ResetTrigger(AnimParam_Idle);
