@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   so_StatusData: {fileID: 11400000, guid: a97e6599939540749a6604da387b87c4, type: 2}
-  currentHP: 0
+  current_HP: 0
 --- !u!58 &5691945828713284746
 CircleCollider2D:
   m_ObjectHideFlags: 0

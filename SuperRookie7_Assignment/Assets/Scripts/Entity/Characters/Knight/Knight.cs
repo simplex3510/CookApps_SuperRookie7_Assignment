@@ -14,7 +14,8 @@ public partial class Knight : BaseCharacter
         animCntrllr = GetComponent<Animator>();
         AssignAnimationParameters();
 
-        circleCollider = GetComponent<CircleCollider2D>();
+        attackableCollider = GetComponent<CircleCollider2D>();
+        damagableCollider = GetComponent<CapsuleCollider2D>();
 
         StateDict = new Dictionary<EState, IStatable>();
         InitializeStateDict();
@@ -33,40 +34,24 @@ public partial class Knight : BaseCharacter
         InitializeEntity();
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
-        CircleCollider.radius = StatusData.so_StatusData.ATK_RNG / 2;
-        CircleCollider.offset = new Vector2 (0, CircleCollider.radius);
+        base.FixedUpdate();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collider)
     {
-        if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
-        {
-            if (collision.gameObject.GetComponentInChildren<BaseMonster>() == target)
-            {
-                IsBattle = true;
-            } 
-        }
+        base.OnTriggerEnter2D(collider);
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    protected override void OnTriggerStay2D(Collider2D collider)
     {
-        if (!IsBattle)
-        {
-            if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
-            {
-                if (collision.gameObject.GetComponentInChildren<BaseMonster>() == target)
-                {
-                    IsBattle = true;
-                }
-            }
-        }
+        base.OnTriggerStay2D(collider);
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    protected override void OnTriggerExit2D(Collider2D collider)
     {
-        IsBattle = false;
+        base.OnTriggerExit2D(collider);
     }
     #endregion
 
@@ -91,7 +76,6 @@ public partial class Knight : BaseCharacter
         StateDict[EState.Idle] = new Knight_IdleState(this);
         StateDict[EState.Move] = new Knight_MoveState(this);
         StateDict[EState.Battle] = new Knight_BattleState(this);
-        StateDict[EState.Skill] = new Knight_SkillState(this);
         StateDict[EState.Die] = new Knight_DieState(this);
     }
 
@@ -102,6 +86,6 @@ public partial class Knight : BaseCharacter
 
     protected override void InitializeStatusData()
     {
-        StatusData.CurrentHP = StatusData.so_StatusData.MaxHP;
+        StatusData.Current_HP = StatusData.so_StatusData.Max_HP;
     }
 }

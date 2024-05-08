@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 971f1701f5f09e943bfe0158a3cce791, type: 3}
   m_Name: Knight_StatusData
   m_EditorClassIdentifier: 
-  maxHP: 200
-  str: 15
-  spd: 2.5
+  max_HP: 400
+  entity_STR: 5
+  entity_SPD: 2.5
   respawnTime: 5
-  atk_rng: 1
-  atk_time: 1
-  skl_rng: 2
+  attack_RNG: 1
+  attack_SPD: 1.5
+  skl_rng: 1
   skl_time: 3

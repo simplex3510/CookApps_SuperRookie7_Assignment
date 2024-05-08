@@ -8,6 +8,7 @@ namespace Singleton.Manager
     public class EntityManager : MonoSingleton<EntityManager>
     {
         [SerializeField]
+        [Range(0.01f, 5f)]
         private float timeScale;
 
         public Dictionary<int, BaseCharacter> spawnedCharactersDict = new Dictionary<int, BaseCharacter>();
@@ -30,7 +31,6 @@ namespace Singleton.Manager
         #region Unity List-Cycle
         private void Awake()
         {
-            
             //DonDestroySingleton();
         }
 
@@ -110,13 +110,11 @@ namespace Singleton.Manager
                 float yPos = Random.Range(spawnPonit2.y, spawnPoint1.y);
 
                 (entity as BaseMonster).Root.transform.position = new Vector2(xPos, yPos);
-                //(entity as BaseMonster).Root.gameObject.SetActive(true);
                 entity.Start();
             }
             else
             {
                 entity.transform.position = Vector2.zero;
-                //entity.gameObject.SetActive(true);
                 entity.Start();
             }
         }

@@ -8,8 +8,9 @@ namespace Entity.Base
 {
     public abstract class BaseEntity : MonoBehaviour, IAttackable, IFiniteStateMachinable
     {
-        // MonoBehaviour
+        #region MonoBehaviour
         public abstract void Start();
+        #endregion
 
         // BaseEntity
         protected abstract void InitializeEntity();

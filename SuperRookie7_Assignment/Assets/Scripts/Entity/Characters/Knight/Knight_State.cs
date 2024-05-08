@@ -8,23 +8,12 @@ public partial class Knight
     #region IAttackable Method
     public override void AttackTarget()
     {
-        if (target != null && target.AttackedEntity(StatusData.so_StatusData.STR) == true)
-        {
-            target = null;
-        }
+        base.AttackTarget();
     }
 
     public override bool AttackedEntity(float damage)
     {
-        StatusData.CurrentHP -= damage;
-
-        if (StatusData.CurrentHP <= 0)
-        {
-            ECurState = EState.Die;
-            return true;
-        }
-
-        return false;
+        return base.AttackedEntity(damage);
     }
     #endregion
 
@@ -48,6 +37,16 @@ public partial class Knight
                     target = monster;
                 }
             }
+
+            Vector2 direction = (target.transform.parent.position - transform.position).normalized;
+            if (direction.x < 0)
+            {
+                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            }
         }
     }
 
@@ -59,21 +58,7 @@ public partial class Knight
             return;
         }
 
-        if (target.transform.parent.gameObject.activeSelf == false)
-        {
-            CheckNearestMonster();
-            return;
-        }
-
-        Vector2 direction = (target.transform.parent.position - transform.position).normalized;
-        if (direction.x < 0)
-        {
-            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-        }
+        CheckNearestMonster();
 
         transform.position = Vector2.MoveTowards(transform.position, target.transform.parent.position, StatusData.so_StatusData.SPD * Time.deltaTime);
     }
@@ -126,6 +111,12 @@ public partial class Knight
     #region State Transition Method
     private void TransitionFromIdle()
     {
+        if (IsBattle == true)
+        {
+            ChangeStateFSM(EState.Battle);
+            return;
+        }
+
         if (0 < EntityManager.Instance.spawnedMonstersDict.Count)
         {
             ChangeStateFSM(EState.Move);
@@ -149,8 +140,9 @@ public partial class Knight
 
     private void TransitionFromBattle()
     {
-        if (target == null || IsBattle == false)
+        if (target == null)
         {
+            IsBattle = false;
             ChangeStateFSM(EState.Idle);
             return;
         }
@@ -158,15 +150,18 @@ public partial class Knight
     #endregion
 
     [SerializeField]
-    private float gizmoOffestX;
+    private float gizmoOffsetX;
     [SerializeField]
-    private float gizmoOffestY;
+    private float gizmoOffsetY_ATK;
     [SerializeField]
-    private float gizmoOffsetRadius;
+    private float gizmoOffsetRadius_ATK;
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius);
+        // AttackableCollider
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(new Vector2(transform.position.x + gizmoOffsetX
+                                          , transform.position.y + gizmoOffsetY_ATK)
+                              , StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius_ATK);
     }
 }

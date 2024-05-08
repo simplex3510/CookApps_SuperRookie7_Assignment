@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Goblin_DieState : BaseState
 {
-    private const float AnimDuration_Die = 0.4f;
+    private const float AnimDuration_Die = 0.7f;
     private float animationTimer = 0f;
     private bool isRendererOff = false;
 
@@ -14,6 +14,8 @@ public class Goblin_DieState : BaseState
     public override void OnStateEnter()
     {
         EntityManager.Instance.spawnedMonstersDict.Remove(GetEntity<Goblin>().GetHashCode());
+
+        GetEntity<Goblin>().CircleCollider.enabled = false;
         GetEntity<Goblin>().AnimCntrllr.SetTrigger(GetEntity<Goblin>().AnimParam_Die);
         animationTimer = Time.time;
     }
@@ -22,6 +24,7 @@ public class Goblin_DieState : BaseState
     {
         EntityManager.Instance.spawnedMonstersDict.Add(GetEntity<Goblin>().GetHashCode(), GetEntity<Goblin>());
 
+        GetEntity<Goblin>().CircleCollider.enabled = true;
         GetEntity<Goblin>().GetComponent<SpriteRenderer>().enabled = true;
         isRendererOff = false;
     }

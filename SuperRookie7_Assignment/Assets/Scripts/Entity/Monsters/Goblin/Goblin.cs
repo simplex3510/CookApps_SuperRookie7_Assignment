@@ -38,30 +38,29 @@ public partial class Goblin : BaseMonster
         InitializeEntity();
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
-        CircleCollider.radius = StatusData.so_StatusData.ATK_RNG / 2;
-        CircleCollider.offset = new Vector2(0, -CircleCollider.radius);
+        base.FixedUpdate();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected override void OnCollisionEnter2D(Collision2D collision)
     {
         if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
         {
-            if (collision.gameObject.GetComponentInChildren<BaseCharacter>() == target)
+            if (collision.gameObject.GetComponent<BaseCharacter>() == target)
             {
                 IsBattle = true;
             }
         }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    protected override void OnCollisionStay2D(Collision2D collision)
     {
         if (!IsBattle)
         {
             if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
             {
-                if (collision.gameObject.GetComponentInChildren<BaseCharacter>() == target)
+                if (collision.gameObject.GetComponent<BaseCharacter>() == target)
                 {
                     IsBattle = true;
                 }
@@ -69,9 +68,15 @@ public partial class Goblin : BaseMonster
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    protected override void OnCollisionExit2D(Collision2D collision)
     {
-        IsBattle = false;
+        if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
+        {
+            if (collision.gameObject.GetComponent<BaseMonster>() == target)
+            {
+                IsBattle = false;
+            }
+        }
     }
 
     private void OnDisable()
@@ -111,6 +116,6 @@ public partial class Goblin : BaseMonster
 
     protected override void InitializeStatusData()
     {
-        StatusData.CurrentHP = StatusData.so_StatusData.MaxHP;
+        StatusData.Current_HP = StatusData.so_StatusData.Max_HP;
     }
 }

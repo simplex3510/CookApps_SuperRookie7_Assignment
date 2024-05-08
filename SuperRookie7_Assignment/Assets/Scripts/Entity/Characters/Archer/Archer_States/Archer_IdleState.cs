@@ -9,7 +9,7 @@ public class Archer_IdleState : BaseState
 
     public override void OnStateEnter()
     {
-        
+        GetEntity<Archer>().AnimCntrllr.SetTrigger(GetEntity<Archer>().AnimParam_Idle);
     }
 
     public override void OnStateExit()

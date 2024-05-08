@@ -9,7 +9,8 @@ public class Archer_MoveState : BaseState
 
     public override void OnStateEnter()
     {
-
+        GetEntity<Archer>().AnimCntrllr.SetTrigger(GetEntity<Archer>().AnimParam_Move);
+        GetEntity<Archer>().CheckNearestMonster();
     }
 
     public override void OnStateExit()
@@ -19,6 +20,6 @@ public class Archer_MoveState : BaseState
 
     public override void OnStateUpdate()
     {
-
+        GetEntity<Archer>().MoveToTarget();
     }
 }

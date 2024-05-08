@@ -17,17 +17,16 @@ public class Knight_BattleState : BaseState
     public override void OnStateExit()
     {
         GetEntity<Knight>().AnimCntrllr.SetBool(GetEntity<Knight>().AnimParam_Battle, false);
-        //GetEntity<Goblin>().CheckNearestCharacter();
     }
 
     public override void OnStateUpdate()
     {
-        timeInterval = 1f / GetEntity<Knight>().StatusData.so_StatusData.ATK_Time;
+        timeInterval = 1f / GetEntity<Knight>().StatusData.so_StatusData.ATK_SPD;
 
         if (timeInterval <= Time.time - GetEntity<Knight>().LastAttackTime)
         {
             GetEntity<Knight>().AnimCntrllr.SetFloat(GetEntity<Knight>().AnimParam_AtkTime,
-                                                     GetEntity<Knight>().StatusData.so_StatusData.ATK_Time);
+                                                     GetEntity<Knight>().StatusData.so_StatusData.ATK_SPD);
             GetEntity<Knight>().AnimCntrllr.SetTrigger(GetEntity<Knight>().AnimParam_Attack);
             GetEntity<Knight>().LastAttackTime = Time.time;
         }

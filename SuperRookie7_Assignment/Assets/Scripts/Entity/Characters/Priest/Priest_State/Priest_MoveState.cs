@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FSM.Base.State;
 
-public class Priest_MoveState : MonoBehaviour
+public class Priest_MoveState : BaseState
 {
-    // Start is called before the first frame update
-    void Start()
+    public Priest_MoveState(Priest entity) : base(entity) { }
+
+    public override void OnStateEnter()
     {
-        
+        GetEntity<Priest>().AnimCntrllr.SetTrigger(GetEntity<Priest>().AnimParam_Move);
+        GetEntity<Priest>().CheckNearestMonster();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnStateExit()
     {
-        
+
+    }
+
+    public override void OnStateUpdate()
+    {
+        GetEntity<Priest>().MoveToTarget();
     }
 }

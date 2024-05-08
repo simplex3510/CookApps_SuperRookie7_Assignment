@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4b7f3425682ff24ea718857aefbe838, type: 3}
   m_Name: Goblin_StatusData
   m_EditorClassIdentifier: 
-  maxHP: 100
-  str: 10
-  spd: 2.5
+  max_HP: 100
+  entity_STR: 10
+  entity_SPD: 2.5
   respawnTime: 5
-  atk_rng: 1
-  atk_time: 1
+  attack_RNG: 1
+  attack_SPD: 1

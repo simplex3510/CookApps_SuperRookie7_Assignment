@@ -29,18 +29,7 @@ namespace Entity.Base
 
         [SerializeField]
         private EState eCurState = EState.None;
-        public EState ECurState
-        {
-            get
-            {
-                return eCurState;
-            }
-            set
-            {
-                //Debug.Log($"Goblin - Before State: {eCurState} | After State: {value}");
-                eCurState = value;
-            }
-        }
+        public EState ECurState { get => eCurState; }
         protected Dictionary<EState, IStatable> StateDict { get; set; }
         protected FiniteStateMachine GoblinFSM { get; set; }
         protected bool IsBattle { get; set; }
@@ -57,6 +46,49 @@ namespace Entity.Base
         [SerializeField]
         private float disappearDuration;
         public float DisappearDuration { get => disappearDuration; }
+
+        #region MonoBehavior
+        protected virtual void FixedUpdate()
+        {
+            circleCollider.radius = statusData.so_StatusData.ATK_RNG * 0.5f;
+        }
+
+        protected virtual void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
+            {
+                if (collision.gameObject.GetComponent<BaseCharacter>() == target)
+                {
+                    IsBattle = true;
+                }
+            }
+        }
+
+        protected virtual void OnCollisionStay2D(Collision2D collision)
+        {
+            if (!IsBattle)
+            {
+                if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
+                {
+                    if (collision.gameObject.GetComponent<BaseCharacter>() == target)
+                    {
+                        IsBattle = true;
+                    }
+                }
+            }
+        }
+
+        protected virtual void OnCollisionExit2D(Collision2D collision)
+        {
+            if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
+            {
+                if (collision.gameObject.GetComponent<BaseMonster>() == target)
+                {
+                    IsBattle = false;
+                }
+            }
+        }
+        #endregion
 
         // BaseEntity
         protected override void InitializeStateDict()
@@ -75,10 +107,33 @@ namespace Entity.Base
             AnimParam_AtkTime = Animator.StringToHash("atk_time");
         }
 
+        #region IAttackable Method
+        public override void AttackTarget()
+        {
+            if (target != null && target.AttackedEntity(StatusData.so_StatusData.STR) == true)
+            {
+                target = null;
+            }
+        }
+
+        public override bool AttackedEntity(float damage)
+        {
+            StatusData.Current_HP -= damage;
+
+            if (StatusData.Current_HP <= 0)
+            {
+                eCurState = EState.Die;
+                return true;
+            }
+
+            return false;
+        }
+        #endregion
+
         // IFiniteStateMachinable
         public override void ChangeStateFSM(EState nextState)
         {
-            ECurState = nextState;
+            eCurState = nextState;
 
             switch (ECurState)
             {

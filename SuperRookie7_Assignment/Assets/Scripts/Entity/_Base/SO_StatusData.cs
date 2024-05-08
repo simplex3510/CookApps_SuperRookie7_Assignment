@@ -6,24 +6,24 @@ using UnityEngine;
 public class SO_StatusData : ScriptableObject
 {
     [SerializeField]
-    private float maxHP;
+    private float max_HP;
     [SerializeField]
-    private float str;
+    private float entity_STR;
     [SerializeField]
-    private float spd;
+    private float entity_SPD;
     [SerializeField]
     private float respawnTime;
 
     [SerializeField]
-    private float atk_rng;
+    private float attack_RNG;
     [SerializeField]
-    private float atk_time;
+    private float attack_SPD;
 
-    public float MaxHP { get => maxHP;  }
-    public float STR { get => str; }
-    public float SPD { get => spd; }
+    public float Max_HP { get => max_HP;  }
+    public float STR { get => entity_STR; }
+    public float SPD { get => entity_SPD; }
     public float RespawnTime { get => respawnTime; }
 
-    public float ATK_RNG { get => atk_rng; }
-    public float ATK_Time { get => atk_time; }
+    public float ATK_RNG { get => attack_RNG; }
+    public float ATK_SPD { get => attack_SPD; }
 }

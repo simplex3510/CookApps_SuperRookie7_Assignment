@@ -1,18 +1,13 @@
+using Entity.Base;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Priest_Status : MonoBehaviour
+public class Priest_Status : BaseStatus
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // 투사체 속도
+    [SerializeField]
+    private float projectile_SPD;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float Projectile_SPD;
 }

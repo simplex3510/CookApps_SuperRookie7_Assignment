@@ -9,7 +9,7 @@ namespace Entity.Base
         public  SO_StatusData so_StatusData;
 
         [UnityEngine.SerializeField]
-        protected float currentHP;
-        public float CurrentHP { get { return currentHP; } set { currentHP = value; } }
+        protected float current_HP;
+        public float Current_HP { get { return current_HP; } set { current_HP = value; } }
     }
 }

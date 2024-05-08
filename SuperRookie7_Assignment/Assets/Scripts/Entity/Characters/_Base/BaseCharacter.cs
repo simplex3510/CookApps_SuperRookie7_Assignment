@@ -13,8 +13,12 @@ namespace Entity.Base
         public Animator AnimCntrllr { get => animCntrllr; }
 
         [SerializeField]
-        protected CircleCollider2D circleCollider;
-        public CircleCollider2D CircleCollider { get => circleCollider; }
+        protected CircleCollider2D attackableCollider;
+        public CircleCollider2D AttackableCollider { get => attackableCollider; }
+
+        [SerializeField]
+        protected CapsuleCollider2D damagableCollider;
+        public CapsuleCollider2D DamagableCollider { get => damagableCollider; }
 
         public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
@@ -27,27 +31,18 @@ namespace Entity.Base
 
         [SerializeField]
         private EState eCurState = EState.None;
-        public EState ECurState 
-        {
-            get
-            {
-                return eCurState;
-            }
-            set
-            {
-                // Debug.Log($"Knight - Before State: {eCurState} | After State: {value}");
-                eCurState = value;
-            } 
-        }
+        public EState ECurState { get => eCurState; }
+
         protected Dictionary<EState, IStatable> StateDict { get; set; }
         protected FiniteStateMachine KnightFSM { get; set; }
         protected bool IsBattle { get; set; }
         public float LastAttackTime { get; set; }
 
         [SerializeField]
-        protected BaseEntity target;
-        [SerializeField]
         protected LayerMask targetLayerMask;
+        [SerializeField]
+        protected BaseEntity target;
+        public BaseEntity Target { get => target; }
 
         [SerializeField]
         private BaseStatus statusData;
@@ -57,7 +52,51 @@ namespace Entity.Base
         private float disappearDuration;
         public float DisappearDuration { get => disappearDuration; }
 
-        // BaseEntity
+        #region MonoBehavior
+        protected virtual void FixedUpdate()
+        {
+            AttackableCollider.radius = statusData.so_StatusData.ATK_RNG;
+        }
+
+        protected virtual void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (((1 << collider.gameObject.layer) & targetLayerMask.value) != 0)
+            {
+                if (collider.gameObject.GetComponentInChildren<BaseMonster>() == target)
+                {
+                    IsBattle = true;
+                }
+            }
+        }
+
+        protected virtual void OnTriggerStay2D(Collider2D collider)
+        {
+            if (IsBattle == false)
+            {
+                if (((1 << collider.gameObject.layer) & targetLayerMask.value) != 0)
+                {
+                    if (collider.gameObject.GetComponentInChildren<BaseMonster>() == target)
+                    {
+                        IsBattle = true;
+                    }
+                }
+            }
+        }
+
+        protected virtual void OnTriggerExit2D(Collider2D collider)
+        {
+            if (((1 << collider.gameObject.layer) & targetLayerMask.value) != 0)
+            {
+                if (collider.gameObject.GetComponentInChildren<BaseMonster>() == target)
+                {
+                    target = null;
+                    IsBattle = false;
+                }
+            }
+        }
+        #endregion
+
+        #region BaseEntity
         protected override void InitializeStateDict()
         {
             StateDict[EState.None] = new BaseEntity_NoneState(null);
@@ -75,13 +114,37 @@ namespace Entity.Base
 
             AnimParam_AtkTime = Animator.StringToHash("atk_time");
         }
+        #endregion
 
-        // IFiniteStateMachinable
-        public override void ChangeStateFSM(EState nextState)
+        #region IAttackable
+        public override void AttackTarget()
         {
-            ECurState = nextState;
+            if (target != null && target.AttackedEntity(StatusData.so_StatusData.STR) == true)
+            {
+                target = null;
+            }
+        }
 
-            switch (ECurState)
+        public override bool AttackedEntity(float damage)
+        {
+            StatusData.Current_HP -= damage;
+
+            if (StatusData.Current_HP <= 0)
+            {
+                eCurState = EState.Die;
+                return true;
+            }
+
+            return false;
+        }
+        #endregion
+
+        #region IFiniteStateMachinable
+        public override void ChangeStateFSM(EState eNextState)
+        {
+            eCurState = eNextState;
+
+            switch (eCurState)
             {
                 case EState.None:
                     Debug.LogWarning("None State");
@@ -106,5 +169,6 @@ namespace Entity.Base
                     break;
             }
         }
+        #endregion
     }
 }

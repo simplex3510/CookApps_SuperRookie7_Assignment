@@ -9,23 +9,12 @@ public partial class Goblin
     #region IAttackable Method
     public override void AttackTarget()
     {
-        if (target != null && target.AttackedEntity(StatusData.so_StatusData.STR) == true)
-        {
-            target = null;
-        }
+        base.AttackTarget();
     }
 
     public override bool AttackedEntity(float damage)
     {
-        StatusData.CurrentHP -= damage;
-
-        if (StatusData.CurrentHP <= 0)
-        {
-            ECurState = EState.Die;
-            return true;
-        }
-
-        return false;
+        return base.AttackedEntity(damage);
     }
     #endregion
 
@@ -49,6 +38,16 @@ public partial class Goblin
                     target = character;
                 }
             }
+
+            Vector2 direction = (target.transform.position - Root.transform.position).normalized;
+            if (direction.x < 0)
+            {
+                transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            }
         }
     }
 
@@ -60,22 +59,8 @@ public partial class Goblin
             return;
         }
 
-        if (target.gameObject.activeSelf == false)
-        {
-            CheckNearestCharacter();
-            return;
-        }
+        CheckNearestCharacter();
 
-        Vector2 direction = (target.transform.position - Root.transform.position).normalized;
-        if (direction.x < 0)
-        {
-            transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-        }
-        
         Root.transform.position = Vector2.MoveTowards(Root.transform.position, target.transform.position, StatusData.so_StatusData.SPD * Time.deltaTime);
     }
     #endregion
@@ -150,8 +135,9 @@ public partial class Goblin
 
     private void TransitionFromBattle()
     {
-        if (target == null || IsBattle == false)
+        if (target == null)
         {
+            IsBattle = false;
             ChangeStateFSM(EState.Idle);
             return;
         }
@@ -168,6 +154,8 @@ public partial class Goblin
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(new Vector2(transform.position.x + gizmoOffestX, transform.position.y + gizmoOffestY), StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius);
+        Gizmos.DrawWireSphere(new Vector2(transform.position.x + gizmoOffestX
+                                          , transform.position.y + gizmoOffestY)
+                              , StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius);
     }
 }

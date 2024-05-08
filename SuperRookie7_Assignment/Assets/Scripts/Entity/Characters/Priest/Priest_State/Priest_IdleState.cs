@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FSM.Base.State;
 
-public class Priest_IdleState : MonoBehaviour
+public class Priest_IdleState : BaseState
 {
-    // Start is called before the first frame update
-    void Start()
+    public Priest_IdleState(Priest entity) : base(entity) { }
+
+    public override void OnStateEnter()
     {
-        
+        GetEntity<Priest>().AnimCntrllr.SetTrigger(GetEntity<Priest>().AnimParam_Idle);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnStateExit()
     {
-        
+
+    }
+
+    public override void OnStateUpdate()
+    {
+
     }
 }

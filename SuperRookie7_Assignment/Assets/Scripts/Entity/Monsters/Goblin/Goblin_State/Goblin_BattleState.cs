@@ -17,17 +17,16 @@ public class Goblin_BattleState : BaseState
     public override void OnStateExit()
     {
         GetEntity<Goblin>().AnimCntrllr.SetBool(GetEntity<Goblin>().AnimParam_Battle, false);
-        //GetEntity<Goblin>().CheckNearestCharacter();
     }
 
     public override void OnStateUpdate()
     {
-        timeInterval = 1f / GetEntity<Goblin>().StatusData.so_StatusData.ATK_Time;
+        timeInterval = 1f / GetEntity<Goblin>().StatusData.so_StatusData.ATK_SPD;
 
         if (timeInterval <= Time.time - GetEntity<Goblin>().LastAttackTime)
         {
             GetEntity<Goblin>().AnimCntrllr.SetFloat(GetEntity<Goblin>().AnimParam_AtkTime,
-                                                     GetEntity<Goblin>().StatusData.so_StatusData.ATK_Time);
+                                                     GetEntity<Goblin>().StatusData.so_StatusData.ATK_SPD);
             GetEntity<Goblin>().AnimCntrllr.SetTrigger(GetEntity<Goblin>().AnimParam_Attack);
             GetEntity<Goblin>().LastAttackTime = Time.time;
         }
