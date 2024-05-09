@@ -11,6 +11,7 @@ namespace Entity.Base
     {
         [SerializeField]
         protected Slider healthBar;
+        public Slider HealthBar { get => healthBar; }
 
         #region MonoBehaviour
         public abstract void Start();

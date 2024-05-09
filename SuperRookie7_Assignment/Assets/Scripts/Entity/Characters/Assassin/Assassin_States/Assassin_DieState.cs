@@ -12,6 +12,7 @@ public class Assassin_DieState : BaseState
     public override void OnStateEnter()
     {
         EntityManager.Instance.spawnedCharactersDict.Remove(GetEntity<Assassin>().GetHashCode());
+        GetEntity<Assassin>().HealthBar.gameObject.SetActive(false);
         GetEntity<Assassin>().AnimCntrllr.SetTrigger(GetEntity<Assassin>().AnimParam_Die);
         respawnTimer = Time.time;
     }
@@ -19,6 +20,7 @@ public class Assassin_DieState : BaseState
     public override void OnStateExit()
     {
         EntityManager.Instance.spawnedCharactersDict.Add(GetEntity<Assassin>().GetHashCode(), GetEntity<Assassin>());
+        GetEntity<Assassin>().HealthBar.gameObject.SetActive(true);
     }
 
     public override void OnStateUpdate()

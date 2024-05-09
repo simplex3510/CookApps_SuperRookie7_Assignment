@@ -2,23 +2,63 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Singleton;
+using UnityEngine.UI;
 
 namespace Singleton.Manager
 {
     public class GameManager : MonoSingleton<GameManager>
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        [SerializeField]
+        private bool isDefeat = false;
+        public bool IsDefeat { get { return isDefeat; } set { isDefeat = value; } }
 
+        [SerializeField]
+        private bool isVictory = false;
+        public bool IsVictory { get { return isVictory; } set { isVictory = value; } }
+
+        private bool isOnce = false;
+        [SerializeField]
+        private bool isBossPhase = false;
+        public bool IsBossPhase { get => isBossPhase; }
+
+        [SerializeField]
+        private Text timerText;
+        [SerializeField]
+        private float timer = 180.0f;
+
+        protected override void Awake()
+        {
+            base.Awake();
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (EntityManager.Instance.spawnedCharactersDict.Count == 0)
+            timer -= Time.deltaTime;
+            
+            if (0f < timer)
             {
-                Destroy(EntityManager.Instance.gameObject);
+                timerText.text = $"{timer : 0.00}";
+            }
+            else
+            {
+                if (!isOnce)
+                {
+                    isOnce = true;
+                    isBossPhase = true;
+                    timerText.text = $"Boss";
+                    EntityManager.Instance.BossSpawn();
+                }
+            }
+
+            if (IsVictory == true)
+            {
+                timerText.text = $"Victory";
+            }
+
+            if (IsDefeat == true)
+            {
+                timerText.text = $"Defeat";
             }
         }
     }

@@ -63,6 +63,7 @@ public partial class Knight : BaseCharacter
         LastAttackTime = 0f;
 
         InitializeStatusData();
+        healthBar.value = StatusData.Current_HP;
 
         animCntrllr.ResetTrigger(AnimParam_Idle);
         animCntrllr.ResetTrigger(AnimParam_Move);

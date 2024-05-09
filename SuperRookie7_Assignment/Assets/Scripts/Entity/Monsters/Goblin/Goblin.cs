@@ -9,8 +9,10 @@ using Singleton.Manager;
 public partial class Goblin : BaseMonster
 {
     #region Unity Life-Cycle
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         rootTransfrom = transform.parent;
 
         animCntrllr = GetComponentInChildren<Animator>();
@@ -91,6 +93,7 @@ public partial class Goblin : BaseMonster
         LastAttackTime = 0f;
 
         InitializeStatusData();
+        healthBar.value = StatusData.Current_HP;
 
         animCntrllr.ResetTrigger(AnimParam_Idle);
         animCntrllr.ResetTrigger(AnimParam_Move);

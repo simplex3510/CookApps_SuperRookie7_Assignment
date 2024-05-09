@@ -12,6 +12,7 @@ public class Archer_DieState : BaseState
     public override void OnStateEnter()
     {
         EntityManager.Instance.spawnedCharactersDict.Remove(GetEntity<Archer>().GetHashCode());
+        GetEntity<Archer>().HealthBar.gameObject.SetActive(false);
         GetEntity<Archer>().AnimCntrllr.SetTrigger(GetEntity<Archer>().AnimParam_Die);
         respawnTimer = Time.time;
     }
@@ -19,6 +20,7 @@ public class Archer_DieState : BaseState
     public override void OnStateExit()
     {
         EntityManager.Instance.spawnedCharactersDict.Add(GetEntity<Archer>().GetHashCode(), GetEntity<Archer>());
+        GetEntity<Archer>().HealthBar.gameObject.SetActive(true);
     }
 
     public override void OnStateUpdate()

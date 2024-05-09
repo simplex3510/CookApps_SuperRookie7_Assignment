@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Singleton
@@ -28,17 +29,26 @@ namespace Singleton
             }
         }
 
-        protected void DonDestroySingleton()
+        protected virtual void Awake()
+        {
+            CheckThisSingleton();
+        }
+
+        protected void CheckThisSingleton()
         {
             if (instance == null)
             {
                 instance = this as T;
-                DontDestroyOnLoad(gameObject);
             }
             else if (instance != this)
             {
                 Destroy(gameObject);
             }
+        }
+
+        protected void DontDestroySingleton()
+        {
+            DontDestroyOnLoad(gameObject);
         }
     }
 }

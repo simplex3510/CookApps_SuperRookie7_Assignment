@@ -4,12 +4,18 @@ using Entity.Base;
 using FSM.Base.State;
 using Singleton.Manager;
 
-public partial class Goblin
+public partial class GoblinBoss
 {
     #region IAttackable Method
-    public override void AttackTarget()
+    public new void AttackTarget()
     {
-        base.AttackTarget();
+        Vector2 point = new Vector2(0f, -0.33f);
+        Collider2D[] targets = Physics2D.OverlapCircleAll(point, 0.77f);
+
+        foreach (var target in targets)
+        {
+            target.GetComponent<BaseEntity>().AttackedEntity(StatusData.so_StatusData.STR);
+        }
     }
 
     public override bool AttackedEntity(float damage)
@@ -19,49 +25,14 @@ public partial class Goblin
     #endregion
 
     #region Move Method
-    public virtual void CheckNearestCharacter()
+    public override void CheckNearestCharacter()
     {
-        float leastDistance = float.MaxValue;
-
-        if (EntityManager.Instance.spawnedCharactersDict.Count == 0)
-        {
-            target = null;
-        }
-        else
-        {
-            foreach (var character in EntityManager.Instance.spawnedCharactersDict.Values)
-            {
-                float distance = Vector2.Distance(Root.transform.position, character.transform.position);
-                if (distance < leastDistance)
-                {
-                    leastDistance = distance;
-                    target = character;
-                }
-            }
-
-            Vector2 direction = (target.transform.position - Root.transform.position).normalized;
-            if (direction.x < 0)
-            {
-                transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-            }
-            else
-            {
-                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-            }
-        }
+        base.CheckNearestCharacter();
     }
 
-    public virtual void MoveToTarget()
+    public override void MoveToTarget()
     {
-        if (target == null)
-        {
-            Debug.LogError("Can not Move to Target which is null");
-            return;
-        }
-
-        CheckNearestCharacter();
-
-        Root.transform.position = Vector2.MoveTowards(Root.transform.position, target.transform.position, StatusData.so_StatusData.SPD * Time.deltaTime);
+        base.MoveToTarget();
     }
     #endregion
 
