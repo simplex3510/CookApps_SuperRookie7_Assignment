@@ -2,15 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Entity.Base;
-using FSM.Base.State;
 using FSM.Base;
+using FSM.Base.State;
 using Singleton.Manager;
 
 public partial class Priest : BaseCharacter
 {
+    [SerializeField]
+    private GameObject crystal;
+
+    [SerializeField]
+    private Transform crystalParent;
+
     #region Unity Life-Cycle
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         animCntrllr = GetComponent<Animator>();
         AssignAnimationParameters();
 
@@ -87,5 +95,10 @@ public partial class Priest : BaseCharacter
     protected override void InitializeStatusData()
     {
         StatusData.Current_HP = StatusData.so_StatusData.Max_HP;
+    }
+
+    protected void Fire()
+    {
+        Instantiate(crystal, crystalParent);
     }
 }

@@ -53,6 +53,13 @@ namespace Entity.Base
         public float DisappearDuration { get => disappearDuration; }
 
         #region MonoBehavior
+        protected virtual void Awake()
+        {
+            healthBar.value = healthBar.maxValue = StatusData.so_StatusData.Max_HP;
+            healthBar.minValue = 0f;
+            
+        }
+
         protected virtual void FixedUpdate()
         {
             AttackableCollider.radius = statusData.so_StatusData.ATK_RNG;
@@ -128,6 +135,8 @@ namespace Entity.Base
         public override bool AttackedEntity(float damage)
         {
             StatusData.Current_HP -= damage;
+
+            healthBar.value = StatusData.Current_HP;
 
             if (StatusData.Current_HP <= 0)
             {

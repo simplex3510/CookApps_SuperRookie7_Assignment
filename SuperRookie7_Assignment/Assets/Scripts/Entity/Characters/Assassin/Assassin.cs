@@ -9,8 +9,10 @@ using Singleton.Manager;
 public partial class Assassin : BaseCharacter
 {
     #region Unity Life-Cycle
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         animCntrllr = GetComponent<Animator>();
         AssignAnimationParameters();
 

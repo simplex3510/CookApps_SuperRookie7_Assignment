@@ -7,9 +7,9 @@ using UnityEngine;
 public partial class Priest
 {
     #region IAttackable Method
-    public override void AttackTarget()
+    public new void AttackTarget()
     {
-        base.AttackTarget();
+        Fire();
     }
 
     public override bool AttackedEntity(float damage)
@@ -42,10 +42,12 @@ public partial class Priest
             Vector2 direction = (target.transform.parent.position - transform.position).normalized;
             if (direction.x < 0)
             {
+                healthBar.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             }
             else
             {
+                healthBar.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 transform.rotation = Quaternion.Euler(0f, 180f, 0f);
             }
         }

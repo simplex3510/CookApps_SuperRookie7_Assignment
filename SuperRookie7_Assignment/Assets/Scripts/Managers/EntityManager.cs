@@ -7,9 +7,9 @@ namespace Singleton.Manager
 {
     public class EntityManager : MonoSingleton<EntityManager>
     {
-        [SerializeField]
-        [Range(0.01f, 5f)]
-        private float timeScale;
+        //[SerializeField]
+        //[Range(0.01f, 5f)]
+        //private float timeScale;
 
         public Dictionary<int, BaseCharacter> spawnedCharactersDict = new Dictionary<int, BaseCharacter>();
         public Dictionary<int, BaseMonster> spawnedMonstersDict = new Dictionary<int, BaseMonster>();
@@ -36,7 +36,7 @@ namespace Singleton.Manager
 
         private void Update()
         {
-            Time.timeScale = timeScale;
+            //Time.timeScale = timeScale;
 
             // When the time is monster spawn time
             if (monsterSpawnCycleTime < Time.time - lastSpawnTime)
@@ -64,20 +64,20 @@ namespace Singleton.Manager
 
         private void OnDestroy()
         {
-            //// 씬이 변경될 때 생성된 게임 오브젝트 정리
-            //var characters = new List<BaseCharacter>(spawnedCharactersDict.Values);
-            //foreach (var character in characters)
-            //{
-            //    Destroy(character.gameObject);
-            //}
-            //spawnedCharactersDict.Clear();
+            // 씬이 변경될 때 생성된 게임 오브젝트 정리
+            var characters = new List<BaseCharacter>(spawnedCharactersDict.Values);
+            foreach (var character in characters)
+            {
+                Destroy(character.gameObject);
+            }
+            spawnedCharactersDict.Clear();
 
-            //var monsters = new List<BaseMonster>(spawnedMonstersDict.Values);
-            //foreach (var monster in monsters)
-            //{
-            //    Destroy(monster.gameObject);
-            //}
-            //spawnedMonstersDict.Clear();
+            var monsters = new List<BaseMonster>(spawnedMonstersDict.Values);
+            foreach (var monster in monsters)
+            {
+                Destroy(monster.gameObject);
+            }
+            spawnedMonstersDict.Clear();
         }
         #endregion
     

@@ -1,11 +1,10 @@
-using Entity.Base;
 using FSM.Base.State;
 using Singleton.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class Archer : BaseCharacter
+public partial class Archer
 {
     #region IAttackable Method
     public new void AttackTarget()
@@ -43,10 +42,12 @@ public partial class Archer : BaseCharacter
             Vector2 direction = (target.transform.parent.position - transform.position).normalized;
             if (direction.x < 0)
             {
+                healthBar.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             }
             else
             {
+                healthBar.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 transform.rotation = Quaternion.Euler(0f, 180f, 0f);
             }
         }

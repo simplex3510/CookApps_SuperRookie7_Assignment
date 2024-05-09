@@ -3,11 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using FSM.Base;
 using FSM.Base.State;
+using UnityEngine.UI;
 
 namespace Entity.Base
 {
     public abstract class BaseEntity : MonoBehaviour, IAttackable, IFiniteStateMachinable
     {
+        [SerializeField]
+        protected Slider healthBar;
+
         #region MonoBehaviour
         public abstract void Start();
         #endregion

@@ -3735,10 +3735,73 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: rod_crystal
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 341
+        width: 26
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2718b70b11e0ac243a9bcc84712f419a
+      internalID: -502471141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rod_bar
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 269
+        width: 26
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cf33881371450048b69ba5d69a50c67
+      internalID: 1860258961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: While_1x1
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 101
+        width: 1
+        height: 1
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e8ed8e3bc1f8f04384eda81c6202dc4
+      internalID: 1478162384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b73dd6cf8d615a84d885b10c9dcb8ab8
     internalID: 0
     vertices: []
     indices: 
@@ -3746,6 +3809,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      While_1x1: 1478162384
       arrow: 21300128
       axe: 21300230
       bow: 21300226
@@ -3875,6 +3939,8 @@ TextureImporter:
       priest-front-arm2-white: 21300204
       priest-front-arm2-yellow: 21300186
       rod: 21300170
+      rod_bar: 1860258961
+      rod_crystal: -502471141
       shield: 21300228
       soldier-back-arm: 21300004
       soldier-body-black: 21300084

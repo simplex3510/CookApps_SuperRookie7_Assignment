@@ -6,16 +6,19 @@ using FSM.Base;
 using FSM.Base.State;
 using Singleton.Manager;
 
-public partial class Archer
+public partial class Archer : BaseCharacter
 {
     [SerializeField]
     private GameObject arrow;
+
     [SerializeField]
     private Transform arrowParent;
 
     #region Unity Life-Cycle
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         animCntrllr = GetComponent<Animator>();
         AssignAnimationParameters();
 
