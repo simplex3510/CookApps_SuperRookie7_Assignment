@@ -668,6 +668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 8600098638515887691}
+  spawnPosition: {x: 1, y: 0}
   animCntrllr: {fileID: 95000010572177686}
   attackableCollider: {fileID: 6833659006168638884}
   damagableCollider: {fileID: 8282302344911126643}

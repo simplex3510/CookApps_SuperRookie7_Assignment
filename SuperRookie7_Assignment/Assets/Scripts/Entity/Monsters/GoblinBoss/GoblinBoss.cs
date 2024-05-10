@@ -26,27 +26,22 @@ public partial class GoblinBoss : Goblin
 
     protected new void FixedUpdate()
     {
-        circleCollider.radius = StatusData.so_StatusData.ATK_RNG * 0.5f;
+        base.FixedUpdate();
     }
 
-    protected override void OnCollisionEnter2D(Collision2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collider)
     {
-        base.OnCollisionExit2D(collision);
+        base.OnTriggerEnter2D(collider);
     }
 
-    protected override void OnCollisionStay2D(Collision2D collision)
+    protected override void OnTriggerStay2D(Collider2D collider)
     {
-        base.OnCollisionStay2D(collision);
+        base.OnTriggerStay2D(collider);
     }
 
-    protected override void OnCollisionExit2D(Collision2D collision)
+    protected override void OnTriggerExit2D(Collider2D collider)
     {
-        base.OnCollisionExit2D(collision);
-    }
-
-    private void OnDisable()
-    {
-        EntityManager.Instance.spawnedMonstersDict.Remove(GetHashCode());
+        base.OnTriggerExit2D(collider);
     }
     #endregion
 

@@ -39,6 +39,7 @@ public partial class Archer : BaseCharacter
 
     public override void Start()
     {
+        base.Start();
         InitializeEntity();
     }
 

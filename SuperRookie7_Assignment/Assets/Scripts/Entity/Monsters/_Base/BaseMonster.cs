@@ -12,14 +12,6 @@ namespace Entity.Base
         protected Transform rootTransfrom;
         public Transform Root { get => rootTransfrom; }
 
-        [SerializeField]
-        protected Animator animCntrllr;
-        public Animator AnimCntrllr { get => animCntrllr; }
-
-        [SerializeField]
-        protected CircleCollider2D circleCollider;
-        public CircleCollider2D CircleCollider { get => circleCollider; }
-
         public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
         public int AnimParam_Move { get; private set; }
@@ -27,73 +19,33 @@ namespace Entity.Base
         public int AnimParam_Attack { get; private set; }
         public int AnimParam_Die { get; private set; }
 
-        [SerializeField]
-        private EState eCurState = EState.None;
-        public EState ECurState { get => eCurState; }
-        protected Dictionary<EState, IStatable> StateDict { get; set; }
         protected FiniteStateMachine GoblinFSM { get; set; }
-        protected bool IsBattle { get; set; }
-        public float LastAttackTime { get; set; }
-
-        [SerializeField]
-        protected BaseEntity target;
-        [SerializeField]
-        protected LayerMask targetLayerMask;
-
-        [SerializeField]
-        private BaseStatus statusData;
-        public BaseStatus StatusData { get => statusData; }
-        [SerializeField]
-        private float disappearDuration;
-        public float DisappearDuration { get => disappearDuration; }
 
         #region MonoBehavior
-        protected virtual void Awake()
+        protected override void Awake()
         {
-            healthBar.value = healthBar.maxValue = StatusData.so_StatusData.Max_HP;
-            healthBar.minValue = 0f;
-
+            base.Awake();
+            offset_RNG = 0.77f;
         }
 
-        protected virtual void FixedUpdate()
+        protected override void FixedUpdate()
         {
-            circleCollider.radius = statusData.so_StatusData.ATK_RNG * 0.5f;
+            base.FixedUpdate();
         }
 
-        protected virtual void OnCollisionEnter2D(Collision2D collision)
+        protected override void OnTriggerEnter2D(Collider2D collider)
         {
-            if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
-            {
-                if (collision.gameObject.GetComponent<BaseCharacter>() == target)
-                {
-                    IsBattle = true;
-                }
-            }
+            base.OnTriggerEnter2D(collider);
         }
 
-        protected virtual void OnCollisionStay2D(Collision2D collision)
+        protected override void OnTriggerStay2D(Collider2D collider)
         {
-            if (!IsBattle)
-            {
-                if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
-                {
-                    if (collision.gameObject.GetComponent<BaseCharacter>() == target)
-                    {
-                        IsBattle = true;
-                    }
-                }
-            }
+            base.OnTriggerStay2D(collider);
         }
 
-        protected virtual void OnCollisionExit2D(Collision2D collision)
+        protected override void OnTriggerExit2D(Collider2D collider)
         {
-            if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
-            {
-                if (collision.gameObject.GetComponent<BaseMonster>() == target)
-                {
-                    IsBattle = false;
-                }
-            }
+            base.OnTriggerExit2D(collider);
         }
         #endregion
 

@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 4906288189827247301}
   - component: {fileID: 3534209411640218822}
   - component: {fileID: 8022901349158942126}
-  - component: {fileID: 5261989875373319275}
+  - component: {fileID: 9091376775897480366}
   - component: {fileID: 4811755070529628109}
   - component: {fileID: 5691945828713284746}
+  - component: {fileID: 3364870728792064577}
   m_Layer: 8
   m_Name: GoblinBoss
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 2.0183485, y: 2.0183485, z: 2.0183485}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7571622112382895399}
@@ -109,7 +110,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5261989875373319275
+--- !u!114 &9091376775897480366
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,23 +119,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 8732232586719629594}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e36262fc098dd440a1034cf3dc86a91, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b84cd465e08241458f41222e34c3124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 1101465621262310595}
-  rootTransfrom: {fileID: 7571622112382895399}
   animCntrllr: {fileID: 8022901349158942126}
-  circleCollider: {fileID: 5691945828713284746}
   eCurState: 0
-  target: {fileID: 0}
+  statusData: {fileID: 4811755070529628109}
+  offset_RNG: 0.77
+  attackableCollider: {fileID: 5691945828713284746}
+  damagableCollider: {fileID: 3364870728792064577}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  statusData: {fileID: 4811755070529628109}
-  disappearDuration: 0
+  target: {fileID: 0}
   gizmoOffestX: 0
-  gizmoOffestY: -0.666
-  gizmoOffsetRadius: 1.12
+  gizmoOffestY: -0.66
+  rootTransfrom: {fileID: 7571622112382895399}
 --- !u!114 &4811755070529628109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,12 +179,47 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.33}
   serializedVersion: 2
   m_Radius: 0.77
+--- !u!70 &3364870728792064577
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8732232586719629594}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.3}
+  m_Size: {x: 1, y: 1.4}
+  m_Direction: 0
 --- !u!1 &9173002089458966285
 GameObject:
   m_ObjectHideFlags: 0

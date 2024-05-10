@@ -33,6 +33,7 @@ public partial class Assassin : BaseCharacter
 
     public override void Start()
     {
+        base.Start();
         InitializeEntity();
     }
 

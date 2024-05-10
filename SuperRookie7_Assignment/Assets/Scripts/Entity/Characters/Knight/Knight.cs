@@ -33,6 +33,7 @@ public partial class Knight : BaseCharacter
 
     public override void Start()
     {
+        base.Start();
         InitializeEntity();
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Singleton;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Singleton.Manager
 {
@@ -59,7 +60,13 @@ namespace Singleton.Manager
             if (IsDefeat == true)
             {
                 timerText.text = $"Defeat";
+                Invoke(nameof(ReGame), 5.0f);
             }
+        }
+
+        private void ReGame()
+        {
+            SceneManager.LoadScene(0/*"StageScene"*/);
         }
     }
 

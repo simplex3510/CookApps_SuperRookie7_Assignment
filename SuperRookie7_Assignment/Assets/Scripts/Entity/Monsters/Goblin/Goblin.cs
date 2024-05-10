@@ -18,7 +18,7 @@ public partial class Goblin : BaseMonster
         animCntrllr = GetComponentInChildren<Animator>();
         AssignAnimationParameters();
 
-        circleCollider = GetComponent<CircleCollider2D>();
+        attackableCollider = GetComponent<CircleCollider2D>();
 
         StateDict = new Dictionary<EState, IStatable>();
         InitializeStateDict();
@@ -45,45 +45,19 @@ public partial class Goblin : BaseMonster
         base.FixedUpdate();
     }
 
-    protected override void OnCollisionEnter2D(Collision2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collider)
     {
-        if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
-        {
-            if (collision.gameObject.GetComponent<BaseCharacter>() == target)
-            {
-                IsBattle = true;
-            }
-        }
+        base.OnTriggerEnter2D(collider);
     }
 
-    protected override void OnCollisionStay2D(Collision2D collision)
+    protected override void OnTriggerStay2D(Collider2D collider)
     {
-        if (!IsBattle)
-        {
-            if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
-            {
-                if (collision.gameObject.GetComponent<BaseCharacter>() == target)
-                {
-                    IsBattle = true;
-                }
-            }
-        }
+        base.OnTriggerStay2D(collider);
     }
 
-    protected override void OnCollisionExit2D(Collision2D collision)
+    protected override void OnTriggerExit2D(Collider2D collider)
     {
-        if (((1 << collision.gameObject.layer) & targetLayerMask.value) != 0)
-        {
-            if (collision.gameObject.GetComponent<BaseMonster>() == target)
-            {
-                IsBattle = false;
-            }
-        }
-    }
-
-    private void OnDisable()
-    {
-        EntityManager.Instance.spawnedMonstersDict.Remove(GetHashCode());
+        base.OnTriggerExit2D(collider);
     }
     #endregion
 

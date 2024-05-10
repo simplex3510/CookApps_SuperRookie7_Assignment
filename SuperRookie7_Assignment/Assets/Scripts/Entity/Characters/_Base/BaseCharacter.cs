@@ -9,16 +9,7 @@ namespace Entity.Base
     public abstract class BaseCharacter : BaseEntity
     {
         [SerializeField]
-        protected Animator animCntrllr;
-        public Animator AnimCntrllr { get => animCntrllr; }
-
-        [SerializeField]
-        protected CircleCollider2D attackableCollider;
-        public CircleCollider2D AttackableCollider { get => attackableCollider; }
-
-        [SerializeField]
-        protected CapsuleCollider2D damagableCollider;
-        public CapsuleCollider2D DamagableCollider { get => damagableCollider; }
+        private Vector2 spawnPosition;
 
         public int AnimParam_AtkTime { get; private set; }
         public int AnimParam_Idle { get; private set; }
@@ -28,78 +19,39 @@ namespace Entity.Base
         public int AnimParam_Attack { get; private set; }
         public int AnimParam_Die { get; private set; }
         public int AnimParam_Victory { get; private set; }
-
-        [SerializeField]
-        private EState eCurState = EState.None;
-        public EState ECurState { get => eCurState; }
-
-        protected Dictionary<EState, IStatable> StateDict { get; set; }
+        
         protected FiniteStateMachine KnightFSM { get; set; }
-        protected bool IsBattle { get; set; }
-        public float LastAttackTime { get; set; }
-
-        [SerializeField]
-        protected LayerMask targetLayerMask;
-        [SerializeField]
-        protected BaseEntity target;
-        public BaseEntity Target { get => target; }
-
-        [SerializeField]
-        private BaseStatus statusData;
-        public BaseStatus StatusData { get => statusData; }
-
-        [SerializeField]
-        private float disappearDuration;
-        public float DisappearDuration { get => disappearDuration; }
 
         #region MonoBehavior
-        protected virtual void Awake()
+        protected override void Awake()
         {
-            healthBar.value = healthBar.maxValue = StatusData.so_StatusData.Max_HP;
-            healthBar.minValue = 0f;
-            
+            base.Awake();
+            offset_RNG = 1f;
         }
 
-        protected virtual void FixedUpdate()
+        public override void Start()
         {
-            AttackableCollider.radius = statusData.so_StatusData.ATK_RNG;
+            transform.position = spawnPosition;
         }
 
-        protected virtual void OnTriggerEnter2D(Collider2D collider)
+        protected override void FixedUpdate()
         {
-            if (((1 << collider.gameObject.layer) & targetLayerMask.value) != 0)
-            {
-                if (collider.gameObject.GetComponentInChildren<BaseMonster>() == target)
-                {
-                    IsBattle = true;
-                }
-            }
+            base.FixedUpdate();
         }
 
-        protected virtual void OnTriggerStay2D(Collider2D collider)
+        protected override void OnTriggerEnter2D(Collider2D collider)
         {
-            if (IsBattle == false)
-            {
-                if (((1 << collider.gameObject.layer) & targetLayerMask.value) != 0)
-                {
-                    if (collider.gameObject.GetComponentInChildren<BaseMonster>() == target)
-                    {
-                        IsBattle = true;
-                    }
-                }
-            }
+            base.OnTriggerEnter2D(collider);
         }
 
-        protected virtual void OnTriggerExit2D(Collider2D collider)
+        protected override void OnTriggerStay2D(Collider2D collider)
         {
-            if (((1 << collider.gameObject.layer) & targetLayerMask.value) != 0)
-            {
-                if (collider.gameObject.GetComponentInChildren<BaseMonster>() == target)
-                {
-                    target = null;
-                    IsBattle = false;
-                }
-            }
+            base.OnTriggerStay2D(collider);
+        }
+
+        protected override void OnTriggerExit2D(Collider2D collider)
+        {
+            base.OnTriggerExit2D(collider);
         }
         #endregion
 

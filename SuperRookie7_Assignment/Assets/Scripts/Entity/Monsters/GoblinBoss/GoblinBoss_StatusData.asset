@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_HP: 1000
   entity_STR: 10
-  entity_SPD: 3.5
+  entity_SPD: 1.5
   respawnTime: 999
-  attack_RNG: 1.4
-  attack_SPD: 2
+  attack_RNG: 1
+  attack_SPD: 0.7

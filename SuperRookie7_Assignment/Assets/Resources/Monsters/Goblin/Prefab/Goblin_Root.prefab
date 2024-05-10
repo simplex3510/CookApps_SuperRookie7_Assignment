@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5261989875373319275}
   - component: {fileID: 4811755070529628109}
   - component: {fileID: 5691945828713284746}
+  - component: {fileID: 5511428018584422720}
   m_Layer: 8
   m_Name: Goblin
   m_TagString: Untagged
@@ -122,19 +123,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 1101465621262310595}
-  rootTransfrom: {fileID: 7571622112382895399}
   animCntrllr: {fileID: 8022901349158942126}
-  circleCollider: {fileID: 5691945828713284746}
   eCurState: 0
-  target: {fileID: 0}
+  statusData: {fileID: 4811755070529628109}
+  offset_RNG: 0.77
+  attackableCollider: {fileID: 5691945828713284746}
+  damagableCollider: {fileID: 5511428018584422720}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  statusData: {fileID: 4811755070529628109}
-  disappearDuration: 0.1
+  target: {fileID: 0}
   gizmoOffestX: 0
-  gizmoOffestY: -0.5
-  gizmoOffsetRadius: 0.5
+  gizmoOffestY: -0.33
+  rootTransfrom: {fileID: 7571622112382895399}
 --- !u!114 &4811755070529628109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,12 +179,47 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.33}
+  serializedVersion: 2
+  m_Radius: 0.77
+--- !u!70 &5511428018584422720
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8732232586719629594}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.5}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Offset: {x: 0, y: -0.3}
+  m_Size: {x: 1, y: 1.4}
+  m_Direction: 0
 --- !u!1 &9173002089458966285
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5330234733784655817, guid: c4903074e4b8a7d42b8f5e72c6224682, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.4959
+      value: 1.55
       objectReference: {fileID: 0}
     - target: {fileID: 5330234733784655817, guid: c4903074e4b8a7d42b8f5e72c6224682, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

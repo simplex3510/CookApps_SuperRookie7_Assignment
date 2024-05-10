@@ -39,6 +39,7 @@ public partial class Priest : BaseCharacter
 
     public override void Start()
     {
+        base.Start();
         InitializeEntity();
     }
 

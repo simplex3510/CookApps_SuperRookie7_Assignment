@@ -17,7 +17,7 @@ public class Goblin_DieState : BaseState
         EntityManager.Instance.readyMonsterQueue.Enqueue(GetEntity<Goblin>());
 
         GetEntity<Goblin>().HealthBar.gameObject.SetActive(false);
-        GetEntity<Goblin>().CircleCollider.enabled = false;
+        GetEntity<Goblin>().DamagableCollider.enabled = false;
         GetEntity<Goblin>().AnimCntrllr.SetTrigger(GetEntity<Goblin>().AnimParam_Die);
         animationTimer = Time.time;
     }
@@ -27,7 +27,7 @@ public class Goblin_DieState : BaseState
         EntityManager.Instance.spawnedMonstersDict.Add(GetEntity<Goblin>().GetHashCode(), GetEntity<Goblin>());
 
         GetEntity<Goblin>().HealthBar.gameObject.SetActive(true);
-        GetEntity<Goblin>().CircleCollider.enabled = true;
+        GetEntity<Goblin>().DamagableCollider.enabled = true;
         GetEntity<Goblin>().GetComponent<SpriteRenderer>().enabled = true;
         isRendererOff = false;
     }

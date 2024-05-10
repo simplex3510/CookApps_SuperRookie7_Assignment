@@ -143,19 +143,4 @@ public partial class Goblin
         }
     }
     #endregion
-
-    [SerializeField]
-    private float gizmoOffestX;
-    [SerializeField]
-    private float gizmoOffestY;
-    [SerializeField]
-    private float gizmoOffsetRadius;
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(new Vector2(transform.position.x + gizmoOffestX
-                                          , transform.position.y + gizmoOffestY)
-                              , StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius);
-    }
 }

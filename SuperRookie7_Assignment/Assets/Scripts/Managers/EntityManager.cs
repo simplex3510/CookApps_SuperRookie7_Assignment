@@ -15,7 +15,6 @@ namespace Singleton.Manager
         public Dictionary<int, BaseMonster> spawnedMonstersDict = new Dictionary<int, BaseMonster>();
         public Queue<BaseMonster> readyMonsterQueue = new Queue<BaseMonster>();
 
-
         [SerializeField]
         private GameObject prefab_Goblin;
         [SerializeField]
@@ -79,27 +78,27 @@ namespace Singleton.Manager
 
         private void OnDestroy()
         {
-            // 씬이 변경될 때 생성된 게임 오브젝트 정리
-            var entities = new List<BaseEntity>(spawnedMonstersDict.Values);
-            entities = new List<BaseEntity>(spawnedCharactersDict.Values);
-            foreach (var entity in entities)
-            {
-                Destroy(entity.gameObject);
-            }
-            spawnedCharactersDict.Clear();
+            //// 씬이 변경될 때 생성된 게임 오브젝트 정리
+            //var entities = new List<BaseEntity>(spawnedMonstersDict.Values);
+            //entities = new List<BaseEntity>(spawnedCharactersDict.Values);
+            //foreach (var entity in entities)
+            //{
+            //    Destroy(entity.gameObject);
+            //}
+            //spawnedCharactersDict.Clear();
 
-            foreach (var entity in entities)
-            {
-                Destroy(entity.gameObject);
-            }
-            spawnedMonstersDict.Clear();
+            //foreach (var entity in entities)
+            //{
+            //    Destroy(entity.gameObject);
+            //}
+            //spawnedMonstersDict.Clear();
 
-            entities = new List<BaseEntity>(readyMonsterQueue);
-            foreach (var entity in entities)
-            {
-                Destroy(entity.gameObject);
-            }
-            readyMonsterQueue.Clear();
+            //entities = new List<BaseEntity>(readyMonsterQueue);
+            //foreach (var entity in entities)
+            //{
+            //    Destroy(entity.gameObject);
+            //}
+            //readyMonsterQueue.Clear();
         }
         #endregion
 

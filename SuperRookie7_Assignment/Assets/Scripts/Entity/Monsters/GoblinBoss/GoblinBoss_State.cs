@@ -3,18 +3,24 @@ using System.Collections;
 using Entity.Base;
 using FSM.Base.State;
 using Singleton.Manager;
+using Unity.VisualScripting;
 
 public partial class GoblinBoss
 {
     #region IAttackable Method
     public new void AttackTarget()
     {
-        Vector2 point = new Vector2(0f, -0.33f);
-        Collider2D[] targets = Physics2D.OverlapCircleAll(point, 0.77f);
+        Collider2D[] targets = Physics2D.OverlapCircleAll(Root.transform.position
+                                                          , 2 * statusData.so_StatusData.ATK_RNG * offset_RNG
+                                                          , targetLayerMask);
 
         foreach (var target in targets)
         {
-            target.GetComponent<BaseEntity>().AttackedEntity(StatusData.so_StatusData.STR);
+            Debug.Log($"{target.name}: {StatusData.so_StatusData.STR}");
+            if (target != null && target.GetComponent<BaseEntity>().AttackedEntity(StatusData.so_StatusData.STR))
+            {
+                this.target = null;
+            }
         }
     }
 
@@ -114,19 +120,4 @@ public partial class GoblinBoss
         }
     }
     #endregion
-
-    [SerializeField]
-    private float gizmoOffestX;
-    [SerializeField]
-    private float gizmoOffestY;
-    [SerializeField]
-    private float gizmoOffsetRadius;
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(new Vector2(transform.position.x + gizmoOffestX
-                                          , transform.position.y + gizmoOffestY)
-                              , StatusData.so_StatusData.ATK_RNG * gizmoOffsetRadius);
-    }
 }
