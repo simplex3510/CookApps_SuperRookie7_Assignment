@@ -114,12 +114,6 @@ public partial class Priest
     #region State Transition Method
     private void TransitionFromIdle()
     {
-        if (IsBattle == true)
-        {
-            ChangeStateFSM(EState.Battle);
-            return;
-        }
-
         if (0 < EntityManager.Instance.spawnedMonstersDict.Count)
         {
             ChangeStateFSM(EState.Move);
